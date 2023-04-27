@@ -7,11 +7,10 @@
 
 <!-- shields.io badges -->
 
-<p align="center">
-  <img src="https://img.shields.io/github/issues/brizuela-go/EncuestApp?style=for-the-badge" alt="issues">
-  <img src="https://img.shields.io/github/forks/brizuela-go/EncuestApp?style=for-the-badge" alt="forks">
-  <img src="https://img.shields.io/github/stars/brizuela-go/EncuestApp?style=for-the-badge" alt="stars">
-  <img src="https://img.shields.io/github/license/brizuela-go/EncuestApp?style=for-the-badge" alt="license">
+<p align="center" style="display: flex; flex-direction: row; gap: 1rem; justify-content: center; align-items: center;">
+  <img src="https://img.shields.io/github/issues/brizuela-go/EncuestApp?style=flat-square&color=green" alt="issues">
+  <img src="https://img.shields.io/github/forks/brizuela-go/EncuestApp?style=flat-square&color=orange" alt="forks">
+  <img src="https://img.shields.io/github/stars/brizuela-go/EncuestApp?style=flat-square&color=yellow" alt="stars">
 </p>
 
 ## 📌 Índice
