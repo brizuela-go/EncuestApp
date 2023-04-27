@@ -1,9 +1,8 @@
-# EncuestApp. Aplicación Web para la creación y gestión de encuestas
-
-<!-- encuestapp logo -->
 <p align="center">
-  <img src="public/favicon.ico" alt="encuestapp logo" width="200" height="200">
+  <img src="public/logo.png" alt="encuestapp logo" width="200" height="200">
 </p>
+
+<h1 align="center"> EncuestApp. Aplicación Web para la creación y gestión de encuestas </h1>
 
 <!-- shields.io badges -->
 
