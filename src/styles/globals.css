@@ -1,0 +1,251 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.cdnfonts.com/css/better-grade");
+
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 0.5rem;
+
+  @apply bg-slate-200 shadow-xl dark:bg-slate-700;
+
+  border-radius: 0.5rem;
+
+  @apply transition-colors duration-300;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-400 shadow-2xl dark:bg-slate-500;
+
+  border-radius: 0.5rem;
+
+  @apply transition-colors duration-300;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-500 shadow-2xl dark:bg-slate-600;
+
+  @apply transition-colors duration-300;
+}
+
+/* scrollbar end */
+
+html,
+body {
+  @apply bg-white dark:bg-[#111828];
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+.survey {
+  @apply rounded-lg bg-slate-200 bg-opacity-10  shadow-xl backdrop-blur-lg dark:bg-slate-700 dark:bg-opacity-20 dark:backdrop-blur-lg;
+}
+
+.survey input[type="button"] {
+  @apply btn-primary btn;
+}
+
+/* all placeholder coming from survey */
+.survey input::placeholder {
+  @apply text-slate-400 dark:text-slate-500;
+}
+
+.survey input[type="text"],
+.survey input[type="email"],
+.survey input[type="number"],
+.survey input[type="tel"],
+.survey input[type="url"],
+.survey input[type="password"],
+.survey input[type="search"],
+.survey input[type="date"],
+.survey input[type="datetime"],
+.survey input[type="datetime-local"],
+.survey input[type="month"],
+.survey input[type="week"],
+.survey input[type="time"],
+.survey select,
+.survey textarea {
+  @apply text-slate-800 dark:text-slate-200;
+}
+
+.survey input {
+  @apply text-slate-800 dark:text-slate-200;
+}
+
+.sv-header__text {
+  @apply space-y-3 bg-gradient-to-r from-[#5831b3] to-[#0f93a5] bg-clip-text  font-bold text-transparent dark:from-[#8f6edc] dark:to-[#68edff] md:text-2xl;
+}
+
+.sv-question__num {
+  @apply bg-gradient-to-r from-[#5831b3] to-[#0f93a5] bg-clip-text  text-transparent;
+}
+
+.sv-question__required-text {
+  @apply bg-gradient-to-r from-[#5831b3] to-[#0f93a5] bg-clip-text  text-transparent;
+}
+
+.sv-question__header {
+  @apply text-slate-900 dark:text-slate-100;
+}
+
+.sv-question__content {
+  @apply text-slate-500 dark:text-slate-500;
+}
+
+.sv-question__title--answer {
+  @apply bg-red-600;
+}
+
+.survey * {
+  --main-color: #661ae6;
+  --add-button-color: #1948b3;
+  --remove-button-color: #ff1800;
+  --disable-color: #dbdbdb;
+  --progress-text-color: #9d9d9d;
+  --disabled-label-color: rgba(64, 64, 64, 0.5);
+  --slider-color: white;
+  --disabled-slider-color: #cfcfcf;
+  --error-color: #d52901;
+  --text-color: #404040;
+  --light-text-color: #fff;
+  --checkmark-color: #fff;
+  --progress-buttons-color: #661ae6;
+  --inputs-background-color: transparent;
+  --main-hover-color: #9f9f9f;
+  --body-container-background-color: #f4f4f4;
+  --text-border-color: #d4d4d4;
+  --disabled-text-color: rgba(64, 64, 64, 0.5);
+  --border-color: rgb(64, 64, 64, 0.5);
+  --header-background-color: #e7e7e7;
+  --answer-background-color: rgba(6, 158, 128, 0.1);
+  --error-background-color: rgba(198, 36, 0, 0.2);
+  --radio-checked-color: #661ae6;
+  --clean-button-color: #1948b3;
+  --body-background-color: #ffffff;
+  --foreground-light: #909090;
+}
+
+.delay-nosurveys {
+  /* animation */
+  animation: delay-nosurveys 2s ease-in-out 0s 1 normal forwards running;
+}
+
+@keyframes delay-nosurveys {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.entrance {
+  /* animation */
+  animation: entrance 0.4s ease-in-out 0s 1 normal forwards running;
+
+  @apply transition-all duration-300;
+}
+
+@keyframes entrance {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@media (max-width: 363px) {
+  .small-devices {
+    @apply btn-md text-2xl;
+  }
+  .hero-small-devices {
+    @apply text-3xl;
+  }
+}
+
+.justify-small-devices p {
+  @apply text-justify;
+}
+
+.dark-card {
+  @apply dark:border-none dark:bg-[#191e2e] dark:bg-opacity-20 dark:bg-none dark:backdrop-blur-lg;
+}
+
+.signature path {
+  @apply stroke-black dark:stroke-white;
+}
+
+#path1 {
+  stroke-dasharray: 2911.8203125;
+  stroke-dashoffset: 2911.8203125;
+  animation: sign 0.4s linear forwards;
+}
+
+#path2 {
+  stroke-dasharray: 1183.8616943359375;
+  stroke-dashoffset: 1183.8616943359375;
+  animation: sign 0.4s linear forwards 0.3s;
+}
+
+#path3 {
+  stroke-dasharray: 678.5609130859375;
+  stroke-dashoffset: 678.5609130859375;
+  animation: sign 0.4s linear forwards 0.6s;
+}
+
+#path4 {
+  stroke-dasharray: 1196.81005859375;
+  stroke-dashoffset: 1196.81005859375;
+  animation: sign 0.4s linear forwards 0.9s;
+}
+
+#path5 {
+  stroke-dasharray: 849.8392944335938;
+  stroke-dashoffset: 849.8392944335938;
+  animation: sign 0.4s linear forwards 1.2s;
+}
+
+#path6 {
+  stroke-dasharray: 982.9130249023438;
+  stroke-dashoffset: 982.9130249023438;
+  animation: sign 0.4s linear forwards 1.5s;
+}
+
+#path7 {
+  stroke-dasharray: 935.0968017578125;
+  stroke-dashoffset: 935.0968017578125;
+  animation: sign 0.4s linear forwards 1.8s;
+}
+
+#path8 {
+  stroke-dasharray: 2875.764892578125;
+  stroke-dashoffset: 2875.764892578125;
+  animation: sign 0.2s linear forwards 2.3s;
+}
+
+#path9 {
+  stroke-dasharray: 1745.224365234375;
+  stroke-dashoffset: 1745.224365234375;
+  animation: sign 0.2s linear forwards 2.6s;
+}
+
+#path10 {
+  stroke-dasharray: 1745.21435546875;
+  stroke-dashoffset: 1745.21435546875;
+  animation: sign 0.2s linear forwards 3s;
+}
+
+@keyframes sign {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

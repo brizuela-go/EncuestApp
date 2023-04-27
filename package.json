@@ -1,0 +1,46 @@
+{
+  "name": "encuestapp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@headlessui/react": "^1.7.13",
+    "@heroicons/react": "^2.0.16",
+    "@stripe/stripe-js": "^1.16.0",
+    "daisyui": "^2.51.4",
+    "firebase": "^8.7.0",
+    "next": "13.1.6",
+    "react": "18.2.0",
+    "react-apexcharts": "^1.4.0",
+    "react-confetti": "^6.1.0",
+    "react-dom": "18.2.",
+    "react-firebase-hooks": "^3.0.4",
+    "react-hot-toast": "^2.4.0",
+    "react-icons": "^4.8.0",
+    "react-spinners": "^0.13.8",
+    "survey-core": "^1.9.79",
+    "survey-react": "^1.9.79",
+    "survey-react-ui": "^1.9.79",
+    "typewriter-effect": "^2.19.0",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/eslint": "^8.21.1",
+    "@types/node": "^18.11.18",
+    "@types/prettier": "^2.7.2",
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.10",
+    "autoprefixer": "^10.4.7",
+    "eslint": "^8.30.0",
+    "eslint-config-next": "13.1.6",
+    "postcss": "^8.4.14",
+    "prettier": "^2.8.1",
+    "prettier-plugin-tailwindcss": "^0.2.1",
+    "tailwindcss": "^3.2.7"
+  }
+}

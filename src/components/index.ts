@@ -1,0 +1,14 @@
+export { default as Auth } from "./Auth";
+export { default as DashboardLayout } from "./DashboardLayout";
+export { default as CompMisEncuestas } from "./CompMisEncuestas";
+export { default as CompDash } from "./CompDash";
+export { default as Navbar } from "./Navbar";
+export { default as Footer } from "./Footer";
+export { default as Hero } from "./Hero";
+export { default as Layout } from "./Layout";
+export { default as SurveyComponent } from "./SurveyComponent";
+export { default as CreadorDeEncuestas } from "./CreadorDeEncuestas";
+export { default as CardQuestion } from "./CardQuestion";
+export { default as DeleteModal } from "./DeleteModal";
+export { default as ShareModal } from "./ShareModal";
+export { default as LoadingLogo } from "./LoadingLogo";
