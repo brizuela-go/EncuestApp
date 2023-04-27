@@ -1,6 +1,8 @@
 import "../styles/globals.css";
 import { Toaster } from "react-hot-toast";
 
+import { Analytics } from "@vercel/analytics/react";
+
 type MyAppProps = {
   Component: React.ComponentType;
   pageProps: any;
@@ -30,6 +32,7 @@ function MyApp({ Component, pageProps }: MyAppProps) {
         }}
       />
       <Component {...pageProps} />
+      <Analytics />
     </>
   );
 }
