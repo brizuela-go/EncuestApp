@@ -148,8 +148,6 @@ body {
 .entrance {
   /* animation */
   animation: entrance 0.4s ease-in-out 0s 1 normal forwards running;
-
-  @apply transition-all duration-300;
 }
 
 @keyframes entrance {

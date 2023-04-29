@@ -13,6 +13,11 @@ function MyApp({ Component, pageProps }: MyAppProps) {
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-color-scheme: dark)").matches;
 
+  console.log(
+    "%c ¡EncuestApp!",
+    "font-weight: bold;  font-size: 80px;color: rgb(69%, 120%, 131%); text-shadow: 3px 3px 0 rgb(17%, 86%, 87%) , 6px 6px 0 rgb(29%, 78%, 89%), 9px 9px 0 rgb(50%, 63%, 93%), 12px 12px 0 rgb(57%, 57%, 93%), 15px 15px 0 rgb(64%, 53%, 96%) , 18px 18px 0 rgb(41%, 31%, 56%), 21px 21px 0 rgb(42,21,113)"
+  );
+
   return (
     <>
       <Toaster

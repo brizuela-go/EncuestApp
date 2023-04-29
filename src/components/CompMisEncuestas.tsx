@@ -13,6 +13,8 @@ import { PulseLoader } from "react-spinners";
 import { DeleteModal } from ".";
 import { ShareModal } from ".";
 import React from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 type Encuesta = {
   id: string;
@@ -68,6 +70,8 @@ const CompMisEncuestas = () => {
     });
   };
 
+  const router = useRouter();
+
   return (
     <>
       {!loaded ? (
@@ -102,24 +106,44 @@ const CompMisEncuestas = () => {
                       copy={copy}
                       setCopy={setCopy}
                     />
+
                     <div
-                      className="entrance card col-span-3 bg-slate-400 bg-opacity-20 dark:bg-slate-800 dark:bg-opacity-40 md:col-span-1"
+                      className="entrance card col-span-3 transform cursor-pointer bg-slate-300 bg-opacity-30 transition-all duration-200 ease-in-out  hover:bg-opacity-60 hover:shadow-xl active:bg-opacity-75
+
+                      active:shadow-lg active:duration-75 active:ease-in-out dark:bg-slate-800 dark:bg-opacity-30  md:col-span-1
+                      
+                      "
                       key={encuesta.id + "-card"}
+                      onClick={() => {
+                        router.push(`mis-encuestas/${encuesta.id}`);
+                      }}
                     >
                       <div className="card-body p-5">
                         <div className="flex gap-2 sm:justify-end">
                           <label
                             htmlFor={`share-modal-${encuesta.id}`}
                             className="btn-ghost btn-sm btn-circle btn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
                           >
                             <BsShareFill />
                           </label>
-                          <div className="btn-ghost btn-sm btn-circle btn">
+                          <Link
+                            href={`mis-encuestas/${encuesta.id}/edit-survey`}
+                            className="btn-ghost btn-sm btn-circle btn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
+                          >
                             <FiEdit />
-                          </div>
+                          </Link>
                           <label
                             htmlFor={`delete-modal-${encuesta.id}`}
                             className="btn-ghost btn-sm btn-circle btn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
                           >
                             <RiDeleteBin7Line />
                           </label>

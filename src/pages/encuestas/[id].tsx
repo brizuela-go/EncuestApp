@@ -1,11 +1,7 @@
 import { NextPage } from "next";
 import Image from "next/image";
 
-import { useAuthState } from "react-firebase-hooks/auth";
-
 import Head from "next/head";
-
-import { useRouter } from "next/router";
 
 import dynamic from "next/dynamic";
 

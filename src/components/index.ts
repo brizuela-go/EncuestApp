@@ -12,3 +12,4 @@ export { default as CardQuestion } from "./CardQuestion";
 export { default as DeleteModal } from "./DeleteModal";
 export { default as ShareModal } from "./ShareModal";
 export { default as LoadingLogo } from "./LoadingLogo";
+export { default as SurveyDashboard } from "./SurveyDashboard";

@@ -14,16 +14,8 @@ import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "../firebase/firebaseClient";
 import { toast } from "react-hot-toast";
-
-const links = [
-  { href: "/dashboard", label: "Inicio", icon: <FaRegChartBar /> },
-  { href: "/dashboard/mis-encuestas", label: "Encuestas", icon: <FaTasks /> },
-  {
-    href: "/dashboard/crear-encuesta",
-    label: "Crear Encuesta",
-    icon: <FaPlusCircle />,
-  },
-];
+import { RiSurveyLine } from "react-icons/ri";
+import { FiEdit } from "react-icons/fi";
 
 const Navbar = () => {
   const [user, userLoading] = useAuthState(firebase.auth());
@@ -114,6 +106,27 @@ type Props = {
 
 const DrawerContent = ({ children }: Props) => {
   const router = useRouter();
+
+  const links = [
+    { href: "/dashboard", label: "Inicio", icon: <FaRegChartBar /> },
+    { href: "/dashboard/mis-encuestas", label: "Encuestas", icon: <FaTasks /> },
+    {
+      href: "/dashboard/crear-encuesta",
+      label: "Crear Encuesta",
+      icon: <FaPlusCircle />,
+    },
+    {
+      href: `/dashboard/mis-encuestas/${router.query.surveyID}`,
+      label: "Encuesta",
+      icon: <RiSurveyLine />,
+    },
+    {
+      href: `/dashboard/mis-encuestas/${router.query.surveyID}/edit-survey`,
+      label: "Editar Encuesta",
+      icon: <FiEdit />,
+    },
+  ];
+
   return (
     <div className="drawer-content ">
       <div className="absolute inset-x-0 top-[calc(100%rem)] -z-20 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-49rem)]">
@@ -178,7 +191,7 @@ const DrawerContent = ({ children }: Props) => {
               </p>
             </Link>
           </li>
-          {router.pathname
+          {router.asPath
             .split("/")
             .filter((item) => item !== "")
             .map((item, index, array) => {
@@ -193,7 +206,9 @@ const DrawerContent = ({ children }: Props) => {
                     </span>
                   ) : (
                     <Link href={href}>
-                      <span className=" flex place-items-center gap-x-2 text-gray-400 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                      <span
+                        className={`flex place-items-center gap-x-2 text-gray-400 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300`}
+                      >
                         {/* icon */}
                         {links.find((link) => link.href === href)?.icon}
                         {links.find((link) => link.href === href)?.label}
@@ -228,7 +243,7 @@ const DrawerSide = () => {
               priority={true}
               quality={100}
             />
-            <span>EncuestApp</span>
+            <span className="text-xl font-medium normal-case">EncuestApp</span>
           </div>
         </li>
         <li className="mt-3">
