@@ -29,6 +29,7 @@ const CompDash = () => {
   // onSnapshot to retrieve all the users
   const [users, setUsers] = useState([]);
   const [encuestas, setEncuestas] = useState([]);
+  const [responses, setResponses] = useState([]);
 
   const [loaded, setLoaded] = useState(false);
 
@@ -61,13 +62,49 @@ const CompDash = () => {
             id: doc.id,
             ...doc.data(),
           }));
+
           setEncuestas(encuestasData as any);
-          setLoaded(true);
         });
     };
 
     getEncuestas();
   }, [user, userLoading]);
+
+  useEffect(() => {
+    let responsesDataArray: any[] = []; // create an empty array to hold all the responses data
+
+    encuestas.forEach((encuesta, index) => {
+      const db = firebase.firestore();
+      const responsesRef = db
+        .collection("encuestas")
+        .doc(encuesta["id"])
+        .collection("respuestas");
+
+      responsesRef.onSnapshot((querySnapshot) => {
+        const responsesData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        responsesDataArray[index] = responsesData; // save the retrieved responses data in the array
+
+        // check if responses data exists for all surveys
+        const allResponsesExist = responsesDataArray.every((data) => data);
+
+        if (allResponsesExist) {
+          // combine all the responses data into one array
+          const allResponses = responsesDataArray.reduce(
+            (accumulator, currentValue) => accumulator.concat(currentValue),
+            []
+          );
+
+          setResponses(allResponses); // set the state with the combined responses data
+
+          setLoaded(true);
+        }
+      });
+    });
+  }, [encuestas]);
 
   const globeEl = useRef<any>();
 
@@ -125,7 +162,7 @@ const CompDash = () => {
     },
     {
       title: "Respuestas Recibidas",
-      value: 0,
+      value: responses.length,
       icon: <RiQuestionAnswerLine />,
       color: "bg-gradient-to-r from-blue-400 to-blue-700",
     },

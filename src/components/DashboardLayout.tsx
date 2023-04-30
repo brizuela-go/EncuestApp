@@ -6,6 +6,7 @@ import {
   FaBars,
   FaHome,
   FaPlusCircle,
+  FaQuestionCircle,
 } from "react-icons/fa";
 import Link from "next/link";
 import { ReactElement } from "react";
@@ -15,7 +16,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "../firebase/firebaseClient";
 import { toast } from "react-hot-toast";
 import { RiSurveyLine } from "react-icons/ri";
-import { FiEdit, FiSettings } from "react-icons/fi";
+import { FiEdit, FiHelpCircle, FiSettings } from "react-icons/fi";
 import Head from "next/head";
 
 const Navbar = () => {
@@ -135,6 +136,11 @@ const DrawerContent = ({ children }: Props) => {
       href: "/dashboard/settings",
       label: "Configuración",
       icon: <FiSettings />,
+    },
+    {
+      href: "/dashboard/help",
+      label: "Ayuda",
+      icon: <FaQuestionCircle />,
     },
   ];
 
@@ -306,7 +312,9 @@ const DrawerSide = () => {
             }
           >
             <div className="flex-col place-items-center items-center justify-center space-y-3">
-              <h4 className="text-center text-xl font-bold  ">
+              <FaQuestionCircle className="w-44 text-center text-2xl" />
+
+              <h4 className=" text-center text-xl font-bold  ">
                 ¿Necesitas ayuda?
               </h4>
               <p className="text-center ">
