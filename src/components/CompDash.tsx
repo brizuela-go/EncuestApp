@@ -77,7 +77,6 @@ const CompDash = () => {
         const controls = globeEl.current.controls();
         controls.autoRotate = true;
         controls.autoRotateSpeed = 1;
-        controls.enableZoom = false;
         globeEl.current.pointOfView({ lat: 0, lng: 280, altitude: 1.7 });
       }
     }

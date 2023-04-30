@@ -6,6 +6,7 @@ import {
   FaBars,
   FaHome,
   FaPlusCircle,
+  FaArrowUp,
 } from "react-icons/fa";
 import Link from "next/link";
 import { ReactElement } from "react";
@@ -35,7 +36,10 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="navbar relative z-10 border border-x-0 border-t-0  border-transparent  bg-slate-400 bg-opacity-10 backdrop-blur-xl backdrop:opacity-20 dark:border-[#0e1320] dark:bg-[#232d40] dark:bg-opacity-20 dark:backdrop-blur-3xl">
+    <nav
+      id="dashnav"
+      className="navbar relative z-10 border border-x-0 border-t-0  border-transparent  bg-slate-400 bg-opacity-10 backdrop-blur-xl backdrop:opacity-20 dark:border-[#0e1320] dark:bg-[#232d40] dark:bg-opacity-20 dark:backdrop-blur-3xl"
+    >
       <div className="navbar-start">
         <label htmlFor="my-drawer" className="lg:hidden">
           <FaBars
@@ -303,6 +307,15 @@ const DashboardLayout: React.FC<LayoutProps> = ({ component }) => {
       <DrawerContent>{component}</DrawerContent>
 
       <DrawerSide />
+      {/* button to get to the top of the page by getting id "dashnav" */}
+      <div className="fixed bottom-0 right-0 mb-5 mr-5">
+        <Link
+          href={"#dashnav"}
+          className="btn-circle btn border-none bg-gradient-to-r from-indigo-300 to-indigo-600  text-white shadow-lg transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-105 hover:shadow-xl active:scale-95 active:shadow-md sm:hidden "
+        >
+          <FaArrowUp />
+        </Link>
+      </div>
     </div>
   );
 };
