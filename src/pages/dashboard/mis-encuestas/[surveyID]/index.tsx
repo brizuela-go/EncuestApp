@@ -1,21 +1,22 @@
 import { NextPage } from "next";
 
 import { DashboardLayout, SurveyDashboard } from "../../../../components";
-import Head from "next/head";
+import { useRouter } from "next/router";
 
 type Props = {};
 
 const Survey: NextPage<Props> = () => {
+  const router = useRouter();
+
   return (
-    <>
-      <Head>
-        <title>Dashboard | Encuesta</title>
-        <meta name="description" content="Dashboard | Mis encuestas" />
-      </Head>
-      <main className="dark:bg-[#0E1320]">
-        <DashboardLayout component={<SurveyDashboard />} />
-      </main>
-    </>
+    <DashboardLayout
+      title={`Encuesta 
+      ${router.query.surveyID}`}
+      description="Encuesta 
+      "
+    >
+      <SurveyDashboard />
+    </DashboardLayout>
   );
 };
 

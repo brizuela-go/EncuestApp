@@ -1,21 +1,14 @@
 import { NextPage } from "next";
 
-import { DashboardLayout, SurveyDashboard } from "../../../../components";
-import Head from "next/head";
+import { DashboardLayout } from "../../../../components";
 
 type Props = {};
 
 const EditSurvey: NextPage<Props> = () => {
   return (
-    <>
-      <Head>
-        <title>Dashboard | Editar Encuesta</title>
-        <meta name="description" content="Dashboard | Mis encuestas" />
-      </Head>
-      <main className="dark:bg-[#0E1320]">
-        <DashboardLayout component={<>Editar</>} />
-      </main>
-    </>
+    <DashboardLayout title="Editar Encuesta" description="Edición de Encuesta">
+      Editar Encuesta
+    </DashboardLayout>
   );
 };
 

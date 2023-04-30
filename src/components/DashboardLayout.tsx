@@ -6,7 +6,6 @@ import {
   FaBars,
   FaHome,
   FaPlusCircle,
-  FaArrowUp,
 } from "react-icons/fa";
 import Link from "next/link";
 import { ReactElement } from "react";
@@ -16,7 +15,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "../firebase/firebaseClient";
 import { toast } from "react-hot-toast";
 import { RiSurveyLine } from "react-icons/ri";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit, FiSettings } from "react-icons/fi";
+import Head from "next/head";
 
 const Navbar = () => {
   const [user, userLoading] = useAuthState(firebase.auth());
@@ -84,10 +84,10 @@ const Navbar = () => {
             className="dropdown-content menu rounded-box mt-3 w-52 bg-gray-200 p-2 lg:menu-compact dark:bg-[#1b2130]  "
           >
             <li>
-              <a>Perfil</a>
+              <Link href={"/dashboard/myprofile"}>Perfil</Link>
             </li>
             <li>
-              <a>Configuración</a>
+              <Link href={"/dashboard/settings"}>Configuración</Link>
             </li>
             <li>
               <button type="button" onClick={signOut}>
@@ -125,6 +125,16 @@ const DrawerContent = ({ children }: Props) => {
       href: `/dashboard/mis-encuestas/${router.query.surveyID}/edit-survey`,
       label: "Editar Encuesta",
       icon: <FiEdit />,
+    },
+    {
+      href: "/dashboard/myprofile",
+      label: "Mi Perfil",
+      icon: <FaUserCircle />,
+    },
+    {
+      href: "/dashboard/settings",
+      label: "Configuración",
+      icon: <FiSettings />,
     },
   ];
 
@@ -287,24 +297,57 @@ const DrawerSide = () => {
             Crear
           </Link>
         </li>
+        {/* li sticked to the bottom with some mb */}
+        <li className=" fixed bottom-6">
+          <Link
+            href={"/dashboard/help"}
+            className={
+              "h-40 w-52 transform bg-[url('/faqs-card-light.png')] text-blue-50 shadow-xl brightness-90 contrast-125 hue-rotate-15  saturate-150 filter transition duration-300 ease-in-out  hover:-translate-y-1 hover:text-blue-900 hover:opacity-90  hover:shadow-2xl hover:brightness-100  dark:bg-[url('/faqs-card.png')] dark:filter-none dark:hover:text-white dark:hover:filter-none"
+            }
+          >
+            <div className="flex-col place-items-center items-center justify-center space-y-3">
+              <h4 className="text-center text-xl font-bold  ">
+                ¿Necesitas ayuda?
+              </h4>
+              <p className="text-center ">
+                Visita nuestra sección de preguntas frecuentes
+              </p>
+            </div>
+          </Link>
+        </li>
       </ul>
     </div>
   );
 };
 
 type LayoutProps = {
-  component: ReactElement;
+  children: React.ReactNode;
+  title: string;
+  description: string;
 };
 
-const DashboardLayout: React.FC<LayoutProps> = ({ component }) => {
+const DashboardLayout: React.FC<LayoutProps> = ({
+  children,
+  title,
+  description,
+}) => {
   return (
-    <div className="drawer-mobile drawer">
-      <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-
-      <DrawerContent>{component}</DrawerContent>
-
-      <DrawerSide />
-    </div>
+    <>
+      <Head>
+        <title>{`Dashboard | ${title}`}</title>
+        <meta
+          name="description"
+          content={`Dashboard de EncuestApp | ${description}`}
+        />
+      </Head>
+      <main className="dark:bg-[#0E1320]">
+        <div className="drawer-mobile drawer">
+          <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+          <DrawerContent>{children as any}</DrawerContent>
+          <DrawerSide />
+        </div>
+      </main>
+    </>
   );
 };
 

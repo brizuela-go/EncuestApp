@@ -225,32 +225,3 @@ const CompDash = () => {
 };
 
 export default CompDash;
-
-{
-  /* <div className="grid grid-cols-12 gap-4">
-  <div className="col-span-12 md:col-span-6">
-    <div className={cardClass}>
-      <div className="card-body grid grid-cols-6 p-4 pb-0">
-        <div className="col-span-3 text-lg">
-          Encuestas Creadas
-        </div>
-        <LastWeek />
-      </div>
-    </div>
-  </div>
-  <div className="col-span-12 md:col-span-6">
-    <div className={cardClass}>
-      <div className="card-body grid grid-cols-6 p-4 pb-0">
-        <div className="col-span-3 text-lg">
-          Respuestas Recibidas
-        </div>
-        <RespRecib />
-      </div>
-    </div>
-  </div>
-
-  <div className="col-span-12 md:col-span-4">
-    <div className="card h-96 bg-base-200"></div>
-  </div>
-</div> */
-}

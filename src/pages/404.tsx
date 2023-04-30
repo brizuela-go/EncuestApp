@@ -1,15 +1,15 @@
 import { Layout } from "../components";
-
 import Link from "next/link";
 import { NextPage } from "next";
-
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 
 type Props = {};
 
 const FourOFour: NextPage<Props> = () => {
   const [gifUrl, setGifUrl] = useState<string>("");
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [inDashboard, setInDashboard] = useState<boolean>(false);
 
   useEffect(() => {
     const loadGif = async () => {
@@ -28,6 +28,14 @@ const FourOFour: NextPage<Props> = () => {
       iframeRef.current.src = gifUrl;
     }
   }, [gifUrl]);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.asPath.includes("/dashboard")) {
+      setInDashboard(true);
+    }
+  }, [router.asPath]);
 
   return (
     <>
@@ -84,9 +92,14 @@ const FourOFour: NextPage<Props> = () => {
               removida.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <Link href="/">
+              <Link
+                href={`${inDashboard ? "/dashboard" : "/"}
+              `}
+              >
                 <button className="animate-bounce rounded-md bg-gradient-to-r from-[#21c8cece] to-[#6f66fa] px-3.5 py-2.5 text-sm font-semibold text-white shadow-lg transition duration-200 ease-in-out hover:-translate-y-2 hover:animate-none hover:bg-gradient-to-tr hover:from-[#4ad3d885] hover:to-[#3930ba] hover:shadow-xl focus-visible:outline  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                  De vuelta a la página principal
+                  {inDashboard
+                    ? "De vuelta al Dashboard"
+                    : "De vuelta a la página principal"}
                 </button>
               </Link>
             </div>
