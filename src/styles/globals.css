@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.cdnfonts.com/css/better-grade");
-
 /* scrollbar */
 ::-webkit-scrollbar {
   width: 0.5rem;

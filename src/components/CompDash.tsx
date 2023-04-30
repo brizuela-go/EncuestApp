@@ -3,6 +3,7 @@ import RespRecib from "./homeDashboard/ResponsesCard";
 import TablaInicio from "./homeDashboard/HomeTable";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import firebase from "../firebase/firebaseClient";
 
 let Globe: any = () => null;
 if (typeof window !== "undefined") Globe = require("react-globe.gl").default;
@@ -71,6 +72,23 @@ const CompDash = () => {
     );
   }, []);
 
+  // onSnapshot to retrieve all the users
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = firebase
+      .firestore()
+      .collection("users")
+      .onSnapshot((snapshot) => {
+        const usersData: any = [];
+        snapshot.forEach((doc) =>
+          usersData.push({ ...doc.data(), id: doc.id })
+        );
+        setUsers(usersData);
+      });
+    return () => unsubscribe();
+  }, []);
+
   return (
     <div className="flex w-full justify-center overflow-x-hidden">
       <div className="container my-5 mx-0 px-4 sm:px-0 md:px-5 ">
@@ -78,7 +96,7 @@ const CompDash = () => {
           Estadísitcas Generales
         </h1>
         {isClient && (
-          <div className="flex justify-between sm:ml-5">
+          <div className="flex flex-col justify-center sm:ml-5 md:flex-row md:justify-between ">
             <div className="flex-col place-items-center text-center">
               <div className="text-2xl font-semibold">Encuestas</div>
               <div className="text-4xl font-bold">12</div>
@@ -107,9 +125,11 @@ const CompDash = () => {
               pointColor={() => "rgb(44%, 35%, 95%)"}
               pointResolution={2}
               pointLabel={({ label }: any) =>
-                `<div align="center" style="background-color: rgba(0, 0, 0, 0.4); padding: 1rem"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/1200px-Flag_of_Mexico.svg.png" align="center" width="40px" height="40px" /> <br /> <p> <b>${label}</b> (${19}°, ${102.36}°) <br /> <b> Usuarios: </b> ${13}</p> </div> `
+                `<div align="center" style="background-color: rgba(0, 0, 0, 0.4); padding: 1rem"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/1200px-Flag_of_Mexico.svg.png" align="center" width="40px" height="40px" /> <br /> <p> <b>${label}</b> (${19}°, ${102.36}°) <br /> <b> Usuarios: </b> ${
+                  users.length
+                }</p> </div> `
               }
-              pointAltitude={0.4}
+              pointAltitude={users.length / 100}
               pointRadius={0.9}
             />
           </div>
