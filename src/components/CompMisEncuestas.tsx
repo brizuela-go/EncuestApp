@@ -88,9 +88,7 @@ const CompMisEncuestas = () => {
         <section>
           <div className="flex w-full justify-center overflow-x-hidden">
             <div className="container my-8 mx-0 px-4 sm:px-0 md:px-5 ">
-              <h1 className="mb-5 text-center text-2xl font-semibold  sm:text-4xl">
-                Mis encuestas
-              </h1>
+              <h1 className="dashboard-title">Mis Encuestas</h1>
               <div className="grid grid-cols-3 gap-4">
                 {encuestas.map((encuesta: Encuesta) => (
                   <React.Fragment key={encuesta.id + "-fragment"}>
@@ -108,7 +106,7 @@ const CompMisEncuestas = () => {
                     />
 
                     <div
-                      className="entrance card col-span-3 transform cursor-pointer bg-slate-300 bg-opacity-30 transition-all duration-200 ease-in-out  hover:bg-opacity-60 hover:shadow-xl active:bg-opacity-75
+                      className="entrance card col-span-3 transform cursor-pointer bg-slate-300 bg-opacity-20 transition-all duration-200 ease-in-out  hover:bg-opacity-60 hover:shadow-xl active:bg-opacity-75
 
                       active:shadow-lg active:duration-75 active:ease-in-out dark:bg-slate-800 dark:bg-opacity-30  md:col-span-1
                       

@@ -284,9 +284,7 @@ const CreadorDeEncuestas: React.FC<Props> = () => {
         </>
       ) : (
         <section className="isolate px-4">
-          <h1 className="mt-5 flex justify-center text-3xl font-semibold">
-            Crear encuesta
-          </h1>
+          <h1 className="dashboard-title mt-5">Crear encuesta</h1>
           <form>
             <div className="entrance m-4 flex flex-col rounded-lg bg-gray-100 bg-opacity-10 p-6 shadow-xl backdrop-blur-xl backdrop:opacity-20 dark:bg-gray-900 dark:bg-opacity-20  dark:backdrop-blur-3xl sm:p-12 ">
               <input

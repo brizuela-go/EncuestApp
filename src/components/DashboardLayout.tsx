@@ -148,8 +148,8 @@ const DrawerContent = ({ children }: Props) => {
               y2="474.645"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stopColor="#4BC5E3" />
-              <stop offset={1} stopColor="#4BC5E3" />
+              <stop stopColor="#0075ff" />
+              <stop offset={1} stopColor="#1186FF" />
             </linearGradient>
           </defs>
         </svg>
@@ -174,7 +174,7 @@ const DrawerContent = ({ children }: Props) => {
               gradientUnits="userSpaceOnUse"
             >
               <stop stopColor="#A087F0" />
-              <stop offset={1} stopColor="#A087F0" />
+              <stop offset={1} stopColor="#B199F1" />
             </linearGradient>
           </defs>
         </svg>

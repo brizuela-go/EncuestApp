@@ -4,6 +4,10 @@ import TablaInicio from "./homeDashboard/HomeTable";
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import firebase from "../firebase/firebaseClient";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { PulseLoader } from "react-spinners";
+import { FaTasks } from "react-icons/fa";
+import { RiQuestionAnswerLine } from "react-icons/ri";
 
 let Globe: any = () => null;
 if (typeof window !== "undefined") Globe = require("react-globe.gl").default;
@@ -13,30 +17,70 @@ const FLIGHT_TIME = 1000;
 const RINGS_MAX_R = 3;
 
 const CompDash = () => {
-  const [isClient, setIsClient] = useState(false);
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+  const [user, userLoading] = useAuthState(firebase.auth());
 
   let cardClass =
-    "entrance card bg-slate-400 bg-opacity-20 dark:bg-slate-800 dark:bg-opacity-40";
+    "entrance card bg-slate-300 bg-opacity-20 dark:bg-slate-900 dark:bg-opacity-50";
 
   const isDarkMode =
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-color-scheme: dark)").matches;
 
+  // onSnapshot to retrieve all the users
+  const [users, setUsers] = useState([]);
+  const [encuestas, setEncuestas] = useState([]);
+
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = firebase
+      .firestore()
+      .collection("users")
+      .onSnapshot((snapshot) => {
+        const usersData: any = [];
+        snapshot.forEach((doc) =>
+          usersData.push({ ...doc.data(), id: doc.id })
+        );
+        setUsers(usersData);
+      });
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const getEncuestas = async () => {
+      const uid = !userLoading && user?.uid;
+      const db = firebase.firestore();
+      const encuestasRef = db.collection("encuestas");
+
+      // On snapshot listener and belongsto query to get only the surveys that belong to the user
+      encuestasRef
+        .where("belongsTo", "==", uid)
+        .orderBy("createdAt", "desc")
+        .onSnapshot((querySnapshot) => {
+          const encuestasData = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setEncuestas(encuestasData as any);
+          setLoaded(true);
+        });
+    };
+
+    getEncuestas();
+  }, [user, userLoading]);
+
   const globeEl = useRef<any>();
 
   useEffect(() => {
-    if (isClient) {
+    if (loaded) {
       if (globeEl.current) {
         const controls = globeEl.current.controls();
         controls.autoRotate = true;
-        controls.autoRotateSpeed = 0.8;
+        controls.autoRotateSpeed = 1;
         globeEl.current.pointOfView({ lat: 0, lng: 280, altitude: 1.7 });
       }
     }
-  }, [isClient, globeEl]);
+  }, [loaded, globeEl]);
 
   const gData = [
     {
@@ -72,66 +116,107 @@ const CompDash = () => {
     );
   }, []);
 
-  // onSnapshot to retrieve all the users
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    const unsubscribe = firebase
-      .firestore()
-      .collection("users")
-      .onSnapshot((snapshot) => {
-        const usersData: any = [];
-        snapshot.forEach((doc) =>
-          usersData.push({ ...doc.data(), id: doc.id })
-        );
-        setUsers(usersData);
-      });
-    return () => unsubscribe();
-  }, []);
+  const cards = [
+    {
+      title: "Encuestas Creadas",
+      value: encuestas.length,
+      icon: <FaTasks />,
+      color: "bg-gradient-to-r from-purple-400 to-purple-700",
+    },
+    {
+      title: "Respuestas Recibidas",
+      value: 0,
+      icon: <RiQuestionAnswerLine />,
+      color: "bg-gradient-to-r from-blue-400 to-blue-700",
+    },
+    {
+      title: "Última Semana",
+      value: 0,
+      icon: <FaTasks />,
+      color: "bg-purple-400",
+    },
+    {
+      title: "Lol",
+      value: 0,
+      icon: <RiQuestionAnswerLine />,
+      color: "bg-blue-600",
+    },
+  ];
 
   return (
     <div className="flex w-full justify-center overflow-x-hidden">
       <div className="container my-5 mx-0 px-4 sm:px-0 md:px-5 ">
-        <h1 className="mb-5 ml-0 text-center  text-2xl font-semibold sm:ml-5 sm:text-left sm:text-4xl  ">
+        <h1 className="dashboard-title md:ml-5 md:text-left ">
           Estadísitcas Generales
         </h1>
-        {isClient && (
-          <div className="flex flex-col justify-center sm:ml-5 md:flex-row md:justify-between ">
-            <div className="flex-col place-items-center text-center">
-              <div className="text-2xl font-semibold">Encuestas</div>
-              <div className="text-4xl font-bold">12</div>
-            </div>
+        {!loaded ? (
+          <div className="delay-nosurveys mt-28 flex items-center justify-center ">
+            <PulseLoader color="#661AE6" />
+          </div>
+        ) : (
+          <div className="flex flex-col justify-center sm:ml-5 lg:flex-row lg:justify-between ">
+            <div className="mt-10">
+              {/* map cards*/}
+              <div className="grid grid-cols-1 items-center gap-4 md:grid-cols-2 lg:grid-cols-1 lg:gap-x-24 lg:gap-y-6  ">
+                {cards.map((card, index) => (
+                  <div
+                    key={` ${card.title} - ${index}`}
+                    className={`${cardClass} card h-24 rounded-lg shadow-lg lg:w-[34rem] `}
+                  >
+                    <div className="card-body -mt-3">
+                      <div className="flex flex-wrap place-items-center items-center justify-between">
+                        <div>
+                          <h5 className="text-lg font-medium dark:text-gray-300 ">
+                            {card.title}
+                          </h5>
+                          <p className=" text-2xl font-bold">
+                            {card.value} <span></span>
+                          </p>
+                        </div>
 
-            <Globe
-              ref={globeEl}
-              globeImageUrl={`
-          ${isDarkMode ? "/darkmap.png" : "/map.png"}
-          `}
-              backgroundColor="rgba(0,0,0,0)"
-              width={700}
-              height={600}
-              ringsData={gData}
-              ringColor={() => "rgb(29%, 63%, 77%)"}
-              onGlobeClick={emitArc}
-              arcsData={arcsData}
-              arcColor={() => "rgb(57%, 57%, 93%)"}
-              arcDashLength={ARC_REL_LEN}
-              arcDashGap={2}
-              arcDashInitialGap={1}
-              arcDashAnimateTime={FLIGHT_TIME}
-              arcsTransitionDuration={0}
-              ringMaxRadius={RINGS_MAX_R}
-              pointsData={hexData}
-              pointColor={() => "rgb(44%, 35%, 95%)"}
-              pointResolution={2}
-              pointLabel={({ label }: any) =>
-                `<div align="center" style="background-color: rgba(0, 0, 0, 0.4); padding: 1rem"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/1200px-Flag_of_Mexico.svg.png" align="center" width="40px" height="40px" /> <br /> <p> <b>${label}</b> (${19}°, ${102.36}°) <br /> <b> Usuarios: </b> ${
-                  users.length
-                }</p> </div> `
-              }
-              pointAltitude={users.length / 100}
-              pointRadius={0.9}
-            />
+                        <div
+                          className={`${card.color} rounded-xl p-3 text-2xl text-white shadow-xl`}
+                        >
+                          {card.icon}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex items-center justify-center">
+              <Globe
+                ref={globeEl}
+                globeImageUrl={`
+              ${isDarkMode ? "/darkmap.png" : "/map.png"}
+              `}
+                backgroundColor="rgba(0,0,0,0)"
+                width={650}
+                height={650}
+                ringsData={gData}
+                ringColor={() => "rgb(29%, 63%, 77%)"}
+                onGlobeClick={emitArc}
+                arcsData={arcsData}
+                arcColor={() => "rgb(57%, 57%, 93%)"}
+                arcDashLength={ARC_REL_LEN}
+                arcDashGap={2}
+                arcDashInitialGap={1}
+                arcDashAnimateTime={FLIGHT_TIME}
+                arcsTransitionDuration={0}
+                ringMaxRadius={RINGS_MAX_R}
+                pointsData={hexData}
+                pointColor={() => "rgb(44%, 35%, 95%)"}
+                pointResolution={2}
+                pointLabel={({ label }: any) =>
+                  `<div align="center" style="background-color: rgba(0, 0, 0, 0.4); padding: 1rem"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/1200px-Flag_of_Mexico.svg.png" align="center" width="40px" height="40px" /> <br /> <p> <b>${label}</b> (${19}°, ${102.36}°) <br /> <b> Usuarios: </b> ${
+                    users.length
+                  }</p> </div> `
+                }
+                pointAltitude={users.length / 100}
+                pointRadius={0.9}
+              />
+            </div>
           </div>
         )}
       </div>
@@ -143,34 +228,29 @@ export default CompDash;
 
 {
   /* <div className="grid grid-cols-12 gap-4">
-<div className="col-span-12 md:col-span-6">
-  <div className={cardClass}>
-    <div className="card-body grid grid-cols-6 p-4 pb-0">
-      <div className="col-span-3 text-lg">Encuestas Creadas</div>
-      <LastWeek />
-    </div>
-  </div>
-</div>
-<div className="col-span-12 md:col-span-6">
-  <div className={cardClass}>
-    <div className="card-body grid grid-cols-6 p-4 pb-0">
-      <div className="col-span-3 text-lg">Respuestas Recibidas</div>
-      <RespRecib />
-    </div>
-  </div>
-</div>
-<div className="col-span-12 md:col-span-8">
-  <div className={cardClass}>
-    <div className="card-body p-4">
-      <div className="col-span-3 text-lg">
-        Encuestas con más respuestas
+  <div className="col-span-12 md:col-span-6">
+    <div className={cardClass}>
+      <div className="card-body grid grid-cols-6 p-4 pb-0">
+        <div className="col-span-3 text-lg">
+          Encuestas Creadas
+        </div>
+        <LastWeek />
       </div>
-      <TablaInicio />
     </div>
   </div>
-</div>
-<div className="col-span-12 md:col-span-4">
-  <div className="card h-96 bg-base-200"></div>
-</div>
+  <div className="col-span-12 md:col-span-6">
+    <div className={cardClass}>
+      <div className="card-body grid grid-cols-6 p-4 pb-0">
+        <div className="col-span-3 text-lg">
+          Respuestas Recibidas
+        </div>
+        <RespRecib />
+      </div>
+    </div>
+  </div>
+
+  <div className="col-span-12 md:col-span-4">
+    <div className="card h-96 bg-base-200"></div>
+  </div>
 </div> */
 }
