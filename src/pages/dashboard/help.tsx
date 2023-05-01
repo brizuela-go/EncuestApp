@@ -9,45 +9,47 @@ const help: NextPage<Props> = () => {
       title="FAQ y Ayuda"
       description="Preguntas Frecuentes y Ayuda"
     >
-      <h1 className="dashboard-title">Ayuda</h1>
-      <section className="dark:bg-gray-800 dark:text-gray-100">
+      <section className="p-8 dark:bg-gray-800 dark:text-gray-100">
         <div className="container mx-auto flex flex-col justify-center px-4 py-8 md:p-8">
           <h2 className="text-2xl font-semibold sm:text-4xl">
-            Frequently Asked Questions
+            Preguntas frecuentes
           </h2>
           <p className="mt-4 mb-8 dark:text-gray-400">
-            Sagittis tempor donec id vestibulum viverra. Neque condimentum
-            primis orci at lacus amet bibendum.
+            En ecuestApp tenemos distintas dudas que esperamos sean resueltas
+            con las siguientes preguntas.
           </p>
           <div className="space-y-4">
             <details className="w-full rounded-lg border">
               <summary className="px-4 py-6 focus:outline-none focus-visible:ring-violet-400">
-                Ex orci laoreet egestas sapien magna egestas scelerisque?
+                ¿Cómo puedo crear una encuesta en la aplicación?
               </summary>
               <p className="ml-4 -mt-4 px-4 py-6 pt-0 dark:text-gray-400">
-                Lectus iaculis orci metus vitae ligula dictum per. Nisl per
-                nullam taciti at adipiscing est.{" "}
+                Para crear una encuesta en la aplicación, debes ir al panel de
+                control de usuario y seleccionar la opción "Crear nueva
+                encuesta". Luego, sigue los pasos guiados para establecer el
+                título de la encuesta, las preguntas y las opciones de
+                respuesta.{" "}
               </p>
             </details>
             <details className="w-full rounded-lg border">
               <summary className="px-4 py-6 focus:outline-none focus-visible:ring-violet-400">
-                Lorem at arcu rutrum viverra metus sapien venenatis lobortis
-                odio?
+                ¿Puedo personalizar el diseño de mi encuesta?
               </summary>
               <p className="ml-4 -mt-4 px-4 py-6 pt-0 dark:text-gray-400">
-                Tincidunt ut hac condimentum rhoncus phasellus nostra. Magna
-                porttitor egestas tincidunt neque vehicula potenti.{" "}
+                Sí, puedes personalizar el diseño de tu encuesta. La aplicación
+                ofrece varias opciones de personalización, incluyendo diferentes
+                temas de diseño, colores, imágenes y fuentes de texto.{" "}
               </p>
             </details>
             <details className="w-full rounded-lg border">
               <summary className="px-4 py-6 focus:outline-none focus-visible:ring-violet-400">
-                Eleifend feugiat sollicitudin laoreet adipiscing bibendum
-                suscipit erat?
+                ¿Puedo compartir mi encuesta con otras personas?
               </summary>
               <p className="ml-4 -mt-4 px-4 py-6 pt-0 dark:text-gray-400">
-                Justo libero tellus integer tincidunt justo semper consequat
-                venenatis aliquet imperdiet. Ultricies urna proin fusce nulla
-                pretium sodales vel magna et massa euismod vulputate sed.{" "}
+                Sí, puedes compartir tu encuesta con otras personas. La
+                aplicación ofrece varias opciones de compartir, incluyendo
+                compartir en redes sociales, correo electrónico, enlaces
+                directos y códigos de incrustación.{" "}
               </p>
             </details>
           </div>
