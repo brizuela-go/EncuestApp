@@ -199,14 +199,16 @@ const CompDash = () => {
                 <Link
                   href={"/dashboard/myprofile"}
                   className={
-                    "card mb-10 transform bg-[url('/profilecard.png')] bg-cover p-20 text-blue-50 shadow-xl brightness-90 contrast-125  hue-rotate-15 saturate-150 filter transition duration-300  ease-in-out hover:-translate-y-1 hover:text-blue-900  hover:opacity-90 hover:shadow-2xl   hover:brightness-100 dark:filter-none dark:hover:text-white dark:hover:filter-none"
+                    "card mb-10 transform bg-[url('/lightprofilecard.jpg')] bg-cover p-14 text-blue-50 shadow-xl hue-rotate-15 filter transition duration-300 ease-in-out  hover:-translate-y-1 hover:text-blue-900 hover:opacity-90  hover:shadow-2xl hover:brightness-100   dark:bg-[url('/profilecard.png')] dark:filter-none dark:hover:text-white dark:hover:filter-none"
                   }
                 >
-                  <div className="flex-col place-items-center items-center justify-center space-y-3">
-                    <h4 className=" text-center text-xl font-bold  ">
-                      ¿Necesitas ayuda?
-                    </h4>
-                    <p className="text-center ">
+                  <div className="space-y-3 ">
+                    <h4 className=" text-xl font-bold  ">¿Necesitas ayuda?</h4>
+                    <p className=" ">
+                      Visita nuestra sección de preguntas frecuentes
+                    </p>
+                    <h4 className=" text-xl font-bold  ">¿Necesitas ayuda?</h4>
+                    <p className=" ">
                       Visita nuestra sección de preguntas frecuentes
                     </p>
                   </div>
