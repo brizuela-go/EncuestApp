@@ -199,17 +199,22 @@ const CompDash = () => {
                 <Link
                   href={"/dashboard/myprofile"}
                   className={
-                    "card mb-10 transform bg-[url('/lightprofilecard.jpg')] bg-cover p-14 text-blue-50 shadow-xl hue-rotate-15 filter transition duration-300 ease-in-out  hover:-translate-y-1 hover:text-blue-900 hover:opacity-90  hover:shadow-2xl hover:brightness-100   dark:bg-[url('/profilecard.png')] dark:filter-none dark:hover:text-white dark:hover:filter-none"
+                    "card mb-10 transform bg-[url('/lightprofilecard.jpg')] bg-cover px-6 pt-9 pb-3 text-blue-50 shadow-xl hue-rotate-15 filter transition duration-300 ease-in-out  hover:-translate-y-1 hover:text-blue-900 hover:opacity-90  hover:shadow-2xl hover:brightness-100   dark:bg-[url('/profilecard.png')] dark:filter-none dark:hover:text-white dark:hover:filter-none"
                   }
                 >
-                  <div className="space-y-3 ">
-                    <h4 className=" text-xl font-bold  ">¿Necesitas ayuda?</h4>
-                    <p className=" ">
-                      Visita nuestra sección de preguntas frecuentes
+                  <div className="">
+                    <p className="mb-1 text-sm text-slate-400">
+                      Bienvenido de vuelta,
                     </p>
-                    <h4 className=" text-xl font-bold  ">¿Necesitas ayuda?</h4>
-                    <p className=" ">
-                      Visita nuestra sección de preguntas frecuentes
+                    <h4 className="mb-5 text-3xl font-bold  ">
+                      {user?.displayName}
+                    </h4>
+                    <p className="mb-1 text-slate-400">
+                      ¡Encantado de verte de vuelta!
+                    </p>
+                    <p className="mb-9 text-slate-400">Sigue encuestappeando</p>
+                    <p className="text-sm">
+                      Pulsa aquí para ir a tu perfil <span>➜</span>
                     </p>
                   </div>
                 </Link>
