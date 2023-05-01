@@ -6,6 +6,7 @@ type Props = {};
 const MyProfile: NextPage<Props> = () => {
   return (
     <DashboardLayout title="Mi Perfil" description="Mi Perfil">
+      <h1 className="dashboard-title">Mi Perfil</h1>
       <div className="p-16">
         <div className="p-8 bg-white shadow mt-24">
           <div className="grid grid-cols-1 md:grid-cols-3">
