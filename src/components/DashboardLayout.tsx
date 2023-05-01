@@ -16,7 +16,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "../firebase/firebaseClient";
 import { toast } from "react-hot-toast";
 import { RiSurveyLine } from "react-icons/ri";
-import { FiEdit, FiHelpCircle, FiSettings } from "react-icons/fi";
+import { FiEdit } from "react-icons/fi";
 import Head from "next/head";
 
 const Navbar = () => {
@@ -88,9 +88,6 @@ const Navbar = () => {
               <Link href={"/dashboard/myprofile"}>Perfil</Link>
             </li>
             <li>
-              <Link href={"/dashboard/settings"}>Configuración</Link>
-            </li>
-            <li>
               <button type="button" onClick={signOut}>
                 Cerrar Sesión
               </button>
@@ -132,11 +129,7 @@ const DrawerContent = ({ children }: Props) => {
       label: "Mi Perfil",
       icon: <FaUserCircle />,
     },
-    {
-      href: "/dashboard/settings",
-      label: "Configuración",
-      icon: <FiSettings />,
-    },
+
     {
       href: "/dashboard/help",
       label: "Ayuda",

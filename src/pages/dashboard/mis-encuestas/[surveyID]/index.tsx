@@ -15,7 +15,7 @@ const Survey: NextPage<Props> = () => {
       description="Encuesta 
       "
     >
-      <SurveyDashboard />
+      <SurveyDashboard surveyID={router?.query?.surveyID as string} />
     </DashboardLayout>
   );
 };

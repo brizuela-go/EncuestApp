@@ -121,7 +121,6 @@ encuestApp
 │  │  │  ├─ index.tsx
 │  │  │  ├─ myprofile.tsx
 │  │  │  ├─ help.tsx
-│  │  │  ├─ settings.tsx
 │  │  │  └─ mis-encuestas
 │  │  │     └─ index.tsx
 │  │  │     ├─ [surveyID].tsx
