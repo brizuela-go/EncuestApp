@@ -10,6 +10,7 @@ const help: NextPage<Props> = () => {
       description="Preguntas Frecuentes y Ayuda"
     >
       <h1 className="dashboard-title">Ayuda</h1>
+      
     </DashboardLayout>
   );
 };

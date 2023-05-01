@@ -15,6 +15,7 @@ module.exports = {
       "graph.facebook.com",
       "scontent.fpbc2-4.fna.fbcdn.net",
       "lh3.googleusercontent.com",
+      "avatars.githubusercontent.com",
     ],
   },
   i18n: {
