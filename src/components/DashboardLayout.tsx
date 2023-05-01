@@ -40,13 +40,13 @@ const Navbar = () => {
         router.push("/");
       }
     }
-  }, [user, userLoading]);
+  }, [user, userLoading, router, isPremium]);
 
   useEffect(() => {
     if (userLoading && !user) {
       router.push("/");
     }
-  }, [userLoading]);
+  }, [userLoading, router, user]);
 
   return (
     <nav className="navbar relative z-10 border border-x-0 border-t-0  border-transparent  bg-slate-400 bg-opacity-10 backdrop-blur-xl backdrop:opacity-20 dark:border-[#0e1320] dark:bg-[#232d40] dark:bg-opacity-20 dark:backdrop-blur-3xl">
