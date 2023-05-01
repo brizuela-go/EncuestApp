@@ -14,10 +14,6 @@ const Home: NextPage<Props> = () => {
   const [user, userLoading] = useAuthState(firebase.auth());
   const userIsPremium = usePremiumStatus(user as firebase.User);
 
-  async function signOut() {
-    await firebase.auth().signOut();
-  }
-
   const router = useRouter();
 
   if (user) {

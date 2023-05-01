@@ -9,7 +9,7 @@ import {
   FaQuestionCircle,
 } from "react-icons/fa";
 import Link from "next/link";
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -18,9 +18,11 @@ import { toast } from "react-hot-toast";
 import { RiSurveyLine } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
 import Head from "next/head";
+import usePremiumStatus from "../stripe/usePremiumStatus";
 
 const Navbar = () => {
   const [user, userLoading] = useAuthState(firebase.auth());
+  const isPremium = usePremiumStatus(user as firebase.User);
 
   async function signOut() {
     try {
@@ -32,9 +34,19 @@ const Navbar = () => {
 
   const router = useRouter();
 
-  if (!user && !userLoading) {
-    router.push("/");
-  }
+  useEffect(() => {
+    if (user && !userLoading) {
+      if (!isPremium) {
+        router.push("/");
+      }
+    }
+  }, [user, userLoading]);
+
+  useEffect(() => {
+    if (userLoading && !user) {
+      router.push("/");
+    }
+  }, [userLoading]);
 
   return (
     <nav className="navbar relative z-10 border border-x-0 border-t-0  border-transparent  bg-slate-400 bg-opacity-10 backdrop-blur-xl backdrop:opacity-20 dark:border-[#0e1320] dark:bg-[#232d40] dark:bg-opacity-20 dark:backdrop-blur-3xl">

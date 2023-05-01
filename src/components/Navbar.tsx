@@ -11,7 +11,6 @@ import { useRouter } from "next/router";
 import firebase from "../firebase/firebaseClient";
 
 import { useAuthState } from "react-firebase-hooks/auth";
-import usePremiumStatus from "../stripe/usePremiumStatus";
 
 const navigation = [
   { name: "Producto", href: "#producto" },
@@ -25,7 +24,6 @@ type Props = {};
 const Navbar: React.FC<Props> = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [user, userLoading] = useAuthState(firebase.auth());
-  const userIsPremium = usePremiumStatus(user as firebase.User);
 
   const router = useRouter();
 

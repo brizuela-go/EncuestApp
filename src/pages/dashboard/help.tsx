@@ -24,11 +24,11 @@ const help: NextPage<Props> = () => {
                 ¿Cómo puedo crear una encuesta en la aplicación?
               </summary>
               <p className="ml-4 -mt-4 px-4 py-6 pt-0 dark:text-gray-400">
-                Para crear una encuesta en la aplicación, debes ir al panel de
+                {`Para crear una encuesta en la aplicación, debes ir al panel de
                 control de usuario y seleccionar la opción "Crear nueva
                 encuesta". Luego, sigue los pasos guiados para establecer el
                 título de la encuesta, las preguntas y las opciones de
-                respuesta.{" "}
+                respuesta.`}{" "}
               </p>
             </details>
             <details className="w-full rounded-lg border">
