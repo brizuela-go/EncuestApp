@@ -214,7 +214,8 @@ const CompDash = () => {
                     </p>
                     <p className="mb-9 text-slate-400">Sigue encuestappeando</p>
                     <p className="text-sm">
-                      Pulsa aquí para ir a tu perfil <span>➜</span>
+                      Pulsa aquí para ir a tu perfil{" "}
+                      <span className="translate">➜</span>
                     </p>
                   </div>
                 </Link>
