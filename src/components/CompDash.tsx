@@ -8,6 +8,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { PulseLoader } from "react-spinners";
 import { FaTasks } from "react-icons/fa";
 import { RiQuestionAnswerLine } from "react-icons/ri";
+import Link from "next/link";
 
 let Globe: any = () => null;
 if (typeof window !== "undefined") Globe = require("react-globe.gl").default;
@@ -186,75 +187,93 @@ const CompDash = () => {
         <h1 className="dashboard-title md:ml-5 md:text-left ">
           Estadísitcas Generales
         </h1>
-        {!loaded ? (
+        {!loaded && !responses.length ? (
           <div className="delay-nosurveys mt-28 flex items-center justify-center ">
             <PulseLoader color="#661AE6" />
           </div>
         ) : (
-          <div className="flex flex-col justify-center sm:ml-5 lg:flex-row lg:justify-between ">
-            <div className="mt-10">
-              {/* map cards*/}
-              <div className="grid grid-cols-1 items-center gap-4 md:grid-cols-2 lg:grid-cols-1 lg:gap-x-24 lg:gap-y-6  ">
-                {cards.map((card, index) => (
-                  <div
-                    key={` ${card.title} - ${index}`}
-                    className={`${cardClass} card h-24 rounded-lg shadow-lg lg:w-[34rem] `}
-                  >
-                    <div className="card-body -mt-3">
-                      <div className="flex flex-wrap place-items-center items-center justify-between">
-                        <div>
-                          <h5 className="text-lg font-medium dark:text-gray-300 ">
-                            {card.title}
-                          </h5>
-                          <p className=" text-2xl font-bold">
-                            {card.value} <span></span>
-                          </p>
-                        </div>
+          <section className="mb-24">
+            <div className="flex flex-col justify-center sm:ml-5 lg:flex-row lg:justify-between ">
+              <div className="mt-10">
+                {/* map cards*/}
+                <Link
+                  href={"/dashboard/myprofile"}
+                  className={
+                    "card mb-10 transform bg-[url('/profilecard.png')] bg-cover p-20 text-blue-50 shadow-xl brightness-90 contrast-125  hue-rotate-15 saturate-150 filter transition duration-300  ease-in-out hover:-translate-y-1 hover:text-blue-900  hover:opacity-90 hover:shadow-2xl   hover:brightness-100 dark:filter-none dark:hover:text-white dark:hover:filter-none"
+                  }
+                >
+                  <div className="flex-col place-items-center items-center justify-center space-y-3">
+                    <h4 className=" text-center text-xl font-bold  ">
+                      ¿Necesitas ayuda?
+                    </h4>
+                    <p className="text-center ">
+                      Visita nuestra sección de preguntas frecuentes
+                    </p>
+                  </div>
+                </Link>
+                <div className="grid grid-cols-1 items-center gap-4 md:grid-cols-2 lg:grid-cols-2 lg:gap-x-7 lg:gap-y-6  ">
+                  {cards.map((card, index) => (
+                    <div
+                      key={` ${card.title} - ${index}`}
+                      className={`${cardClass} card h-24 rounded-lg shadow-lg lg:w-[17rem] `}
+                    >
+                      <div className="card-body -mt-3">
+                        <div className="flex flex-wrap place-items-center items-center justify-between">
+                          <div>
+                            <h5 className="text-lg font-medium dark:text-gray-300 lg:text-base ">
+                              {card.title}
+                            </h5>
+                            <p className=" text-2xl font-bold lg:text-xl">
+                              {card.value} <span></span>
+                            </p>
+                          </div>
 
-                        <div
-                          className={`${card.color} rounded-xl p-3 text-2xl text-white shadow-xl`}
-                        >
-                          {card.icon}
+                          <div
+                            className={`${card.color} rounded-xl p-3 text-2xl text-white shadow-xl`}
+                          >
+                            {card.icon}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-            <div className="flex items-center justify-center">
-              <Globe
-                ref={globeEl}
-                globeImageUrl={`
+              <div className="flex items-center justify-center">
+                <Globe
+                  ref={globeEl}
+                  globeImageUrl={`
               ${isDarkMode ? "/darkmap.png" : "/map.png"}
               `}
-                backgroundColor="rgba(0,0,0,0)"
-                width={650}
-                height={650}
-                ringsData={gData}
-                ringColor={() => "rgb(29%, 63%, 77%)"}
-                onGlobeClick={emitArc}
-                arcsData={arcsData}
-                arcColor={() => "rgb(57%, 57%, 93%)"}
-                arcDashLength={ARC_REL_LEN}
-                arcDashGap={2}
-                arcDashInitialGap={1}
-                arcDashAnimateTime={FLIGHT_TIME}
-                arcsTransitionDuration={0}
-                ringMaxRadius={RINGS_MAX_R}
-                pointsData={hexData}
-                pointColor={() => "rgb(44%, 35%, 95%)"}
-                pointResolution={2}
-                pointLabel={({ label }: any) =>
-                  `<div align="center" style="background-color: rgba(0, 0, 0, 0.4); padding: 1rem"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/1200px-Flag_of_Mexico.svg.png" align="center" width="40px" height="40px" /> <br /> <p> <b>${label}</b> (${19}°, ${102.36}°) <br /> <b> Usuarios: </b> ${
-                    users.length
-                  }</p> </div> `
-                }
-                pointAltitude={users.length / 100}
-                pointRadius={0.9}
-              />
+                  backgroundColor="rgba(0,0,0,0)"
+                  width={650}
+                  height={650}
+                  ringsData={gData}
+                  ringColor={() => "rgb(29%, 63%, 77%)"}
+                  onGlobeClick={emitArc}
+                  arcsData={arcsData}
+                  arcColor={() => "rgb(57%, 57%, 93%)"}
+                  arcDashLength={ARC_REL_LEN}
+                  arcDashGap={2}
+                  arcDashInitialGap={1}
+                  arcDashAnimateTime={FLIGHT_TIME}
+                  arcsTransitionDuration={0}
+                  ringMaxRadius={RINGS_MAX_R}
+                  pointsData={hexData}
+                  pointColor={() => "rgb(44%, 35%, 95%)"}
+                  pointResolution={2}
+                  pointLabel={({ label }: any) =>
+                    `<div align="center" style="background-color: rgba(0, 0, 0, 0.4); padding: 1rem"> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/1200px-Flag_of_Mexico.svg.png" align="center" width="40px" height="40px" /> <br /> <p> <b>${label}</b> (${19}°, ${102.36}°) <br /> <b> Usuarios: </b> ${
+                      users.length
+                    }</p> </div> `
+                  }
+                  pointAltitude={users.length / 100}
+                  pointRadius={0.9}
+                />
+              </div>
             </div>
-          </div>
+            <div className="flex flex-col justify-center sm:ml-5 lg:flex-row lg:justify-between "></div>
+          </section>
         )}
       </div>
     </div>
