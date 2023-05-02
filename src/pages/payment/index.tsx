@@ -90,6 +90,7 @@ const PaymentHome: NextPage<Props> = (props) => {
         <Layout
           title="Empieza a Gestionar y Procesar tus Encuestas"
           description="EncuestApp. La mejor aplicación para gestionar tus encuestas"
+          AuthUser={AuthUser}
         >
           <section className="entrance mx-auto mt-20 max-w-7xl px-6 pt-24 sm:py-32 lg:px-8">
             <div className="mx-auto max-w-2xl sm:text-center">
