@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useState } from "react";
 import Typewriter from "typewriter-effect";
 
 type Props = {
@@ -7,6 +8,8 @@ type Props = {
 };
 
 const Hero: React.FC<Props> = ({ user, userIsPremium }) => {
+  const [loading, setLoading] = useState(false);
+
   return (
     <section className="relative isolate px-6 pt-14 lg:px-8">
       <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
@@ -69,7 +72,10 @@ const Hero: React.FC<Props> = ({ user, userIsPremium }) => {
             >
               <button
                 type="button"
-                className="animate-pulse rounded-md bg-gradient-to-r from-[#21c8cece] to-[#6f66fa] px-3.5 py-2.5 text-sm font-semibold text-white shadow-lg transition duration-200 ease-in-out hover:-translate-y-2 hover:animate-none hover:bg-gradient-to-tr hover:from-[#4ad3d885] hover:to-[#3930ba] hover:shadow-xl focus-visible:outline  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:scale-95"
+                className={`${
+                  loading && "loading cursor-wait"
+                } btn-md btn animate-pulse  rounded-md border-none border-transparent bg-gradient-to-r from-[#50c5ecee] to-[#6f66fa] px-3.5 py-0 text-sm font-semibold capitalize text-white shadow-lg transition duration-200 ease-in-out hover:-translate-y-2 hover:animate-none hover:bg-gradient-to-tr hover:from-[#50c5ecee] hover:to-[#4e42ee] hover:shadow-xl focus-visible:outline  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 active:scale-95`}
+                onClick={() => setLoading(true)}
               >
                 {userIsPremium && user ? "Ir al Dashboard" : "Empieza ahora"}
               </button>

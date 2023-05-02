@@ -12,6 +12,7 @@ import {
   withAuthUser,
   withAuthUserTokenSSR,
 } from "next-firebase-auth";
+import { useState } from "react";
 
 const includedFeatures = [
   "Gestión de Encuestas",
@@ -24,6 +25,7 @@ type Props = {};
 
 const PaymentHome: NextPage<Props> = (props) => {
   const AuthUser = useAuthUser();
+  const [loading, setLoading] = useState(false);
 
   async function handleCheckout() {
     toast.promise(createCheckoutSession(AuthUser?.id || ""), {
@@ -31,6 +33,7 @@ const PaymentHome: NextPage<Props> = (props) => {
       success: "Redireccionando...",
       error: "Error al crear la sesión de pago",
     });
+    setLoading(true);
   }
 
   return (
@@ -108,7 +111,7 @@ const PaymentHome: NextPage<Props> = (props) => {
                 <h3 className=" bg-gradient-to-r from-amber-400 via-amber-700 to-amber-900 bg-clip-text text-2xl font-bold tracking-tight text-transparent dark:from-amber-200 dark:via-amber-700 dark:to-amber-900">
                   Plan Premium
                 </h3>
-                <p className="mt-6 text-base leading-7 text-slate-900 dark:text-slate-400">
+                <p className="mt-6 text-base leading-7 text-slate-900 dark:text-slate-300">
                   El plan premium te ofrece todas las ventajas de la aplicación.
                   No esperes más y empieza a disfrutar de todas las ventajas que
                   EncuestApp te ofrece.
@@ -121,7 +124,7 @@ const PaymentHome: NextPage<Props> = (props) => {
                 </div>
                 <ul
                   role="list"
-                  className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-slate-900 dark:text-slate-400 sm:grid-cols-2 sm:gap-6"
+                  className="mt-8 grid grid-cols-1 gap-4 text-sm leading-6 text-slate-900 dark:text-slate-300 sm:grid-cols-2 sm:gap-6"
                 >
                   {includedFeatures.map((feature) => (
                     <li key={feature} className="flex gap-x-3">
@@ -137,7 +140,7 @@ const PaymentHome: NextPage<Props> = (props) => {
               <div className="-mt-2 p-2 lg:mt-0 lg:w-full lg:max-w-md lg:flex-shrink-0">
                 <div className=" rounded-2xl bg-transparent bg-gradient-to-r from-transparent  py-10 text-center backdrop:opacity-25 backdrop:blur-xl  dark:to-transparent  dark:ring-0 lg:flex lg:flex-col lg:justify-center lg:py-16">
                   <div className="mx-auto max-w-xs px-8">
-                    <p className="text-base font-semibold text-slate-600 dark:text-slate-400">
+                    <p className="text-base font-semibold text-slate-600 dark:text-slate-300">
                       Un pago mensual de tan solo
                     </p>
                     <p className="mt-6 flex items-baseline justify-center gap-x-2">
@@ -151,27 +154,28 @@ const PaymentHome: NextPage<Props> = (props) => {
                     <button
                       type="button"
                       onClick={() => handleCheckout()}
-                      className="btn mt-10  block w-full transform rounded-md border-none bg-gradient-to-r from-amber-400 via-amber-700 to-amber-900 px-3 py-2 text-center text-sm font-semibold tracking-tight text-transparent text-white shadow-sm transition duration-300 ease-in-out hover:-translate-y-1  hover:bg-gradient-to-bl hover:from-amber-900 hover:via-amber-600 hover:to-amber-400 hover:shadow-2xl
-                    focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
-                    focus-visible:outline-amber-600
+                      className={` ${
+                        loading && "loading "
+                      } btn mt-10  w-full rounded-md border-none bg-gradient-to-r from-amber-400 via-amber-700 to-amber-900 px-3 py-2 text-center text-sm font-semibold   
+                      text-white shadow-sm transition duration-300 ease-in-out hover:-translate-y-1  hover:bg-gradient-to-tl
+                       hover:from-amber-900 hover:via-amber-600 hover:to-amber-400 hover:shadow-2xl
                     dark:from-amber-200
                     dark:via-amber-700
                     dark:to-amber-800
                     dark:hover:from-amber-800
                     dark:hover:via-amber-700
                     dark:hover:to-amber-200
-                    dark:focus-visible:outline-amber-600
-                    "
+                    `}
                     >
-                      Obtener Acceso
+                      {loading ? "Obteniendo Acceso..." : "Obtener Acceso"}
                     </button>
                     <p className="mt-6 text-xs leading-5 text-slate-600 dark:text-slate-400">
                       <span className="font-semibold">Nota:</span> El pago se
                       realiza a través de{" "}
                       <Link
                         href="https://stripe.com/es"
-                        className="font-bold text-purple-800 hover:text-purple-700
-                      hover:underline dark:text-purple-400  dark:hover:text-fuchsia-300
+                        className="font-bold text-purple-800 transition
+                      duration-200 ease-in-out  hover:text-purple-700 hover:underline dark:text-purple-600 dark:hover:text-fuchsia-400
                       "
                       >
                         Stripe
@@ -208,4 +212,6 @@ export const getServerSideProps = withAuthUserTokenSSR({
   };
 });
 
-export default withAuthUser<any>()(PaymentHome);
+export default withAuthUser<any>({
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+})(PaymentHome);
