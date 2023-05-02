@@ -17,7 +17,6 @@ import { RiSurveyLine } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
 import Head from "next/head";
 
-import { AuthAction, withAuthUser } from "next-firebase-auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "../firebase/firebaseClient";
 
