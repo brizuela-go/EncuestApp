@@ -1,9 +1,14 @@
 import { NextPage } from "next";
 import { DashboardLayout } from "../../components";
+import {
+  AuthAction,
+  withAuthUser,
+  withAuthUserTokenSSR,
+} from "next-firebase-auth";
 
 type Props = {};
 
-const help: NextPage<Props> = () => {
+const Help: NextPage<Props> = () => {
   return (
     <DashboardLayout
       title="FAQ y Ayuda"
@@ -59,4 +64,26 @@ const help: NextPage<Props> = () => {
   );
 };
 
-export default help;
+export const getServerSideProps = withAuthUserTokenSSR({
+  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
+  whenAuthed: AuthAction.RENDER,
+})(async ({ AuthUser }) => {
+  // Optionally, get other props.
+  const isPremium = AuthUser.claims?.stripeRole ? true : false;
+
+  if (!isPremium) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+});
+
+export default withAuthUser<any>({
+  whenAuthed: AuthAction.RENDER,
+})(Help);

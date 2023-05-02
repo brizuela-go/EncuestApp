@@ -9,6 +9,7 @@ import { PulseLoader } from "react-spinners";
 import { FaTasks } from "react-icons/fa";
 import { RiQuestionAnswerLine } from "react-icons/ri";
 import Link from "next/link";
+import { useAuthUser } from "next-firebase-auth";
 
 let Globe: any = () => null;
 if (typeof window !== "undefined") Globe = require("react-globe.gl").default;
@@ -19,6 +20,7 @@ const RINGS_MAX_R = 3;
 
 const CompDash = () => {
   const [user, userLoading] = useAuthState(firebase.auth());
+  const AuthUser = useAuthUser();
 
   let cardClass =
     "entrance card bg-slate-300 bg-opacity-20 dark:bg-slate-900 dark:bg-opacity-50";
@@ -207,7 +209,7 @@ const CompDash = () => {
                       Bienvenido de vuelta,
                     </p>
                     <h4 className="mb-5 text-3xl font-bold  ">
-                      {user?.displayName}
+                      {AuthUser?.displayName}
                     </h4>
                     <p className="mb-1 text-slate-400">
                       ¡Encantado de verte de vuelta!

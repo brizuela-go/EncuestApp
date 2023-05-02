@@ -1,14 +1,17 @@
 import { CheckIcon } from "@heroicons/react/20/solid";
-import firebase from "../../firebase/firebaseClient";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { createCheckoutSession } from "../../stripe/createCheckoutSession";
-import usePremiumStatus from "../../stripe/usePremiumStatus";
 import toast from "react-hot-toast";
 
 import { NextPage } from "next";
-import { useRouter } from "next/router";
+
 import Link from "next/link";
-import { Layout, LoadingLogo } from "../../components";
+import { Layout } from "../../components";
+import {
+  AuthAction,
+  useAuthUser,
+  withAuthUser,
+  withAuthUserTokenSSR,
+} from "next-firebase-auth";
 
 const includedFeatures = [
   "Gestión de Encuestas",
@@ -20,31 +23,10 @@ const includedFeatures = [
 type Props = {};
 
 const PaymentHome: NextPage<Props> = (props) => {
-  const [user, userLoading] = useAuthState(firebase.auth());
-  const userIsPremium = usePremiumStatus(user as firebase.User);
-
-  const router = useRouter();
-
-  if (userLoading) {
-    return (
-      <Layout title="Cargando..." description="Cargando...">
-        <LoadingLogo />
-      </Layout>
-    );
-  }
-
-  if (!user) {
-    router.push("/login");
-    return null;
-  }
-
-  if (userIsPremium) {
-    router.push("/dashboard");
-    return null;
-  }
+  const AuthUser = useAuthUser();
 
   async function handleCheckout() {
-    toast.promise(createCheckoutSession(user?.uid || ""), {
+    toast.promise(createCheckoutSession(AuthUser?.id || ""), {
       loading: "Creando sesión de pago...",
       success: "Redireccionando...",
       error: "Error al crear la sesión de pago",
@@ -205,4 +187,24 @@ const PaymentHome: NextPage<Props> = (props) => {
   );
 };
 
-export default PaymentHome;
+export const getServerSideProps = withAuthUserTokenSSR({
+  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
+  whenAuthed: AuthAction.RENDER,
+})(async ({ AuthUser }) => {
+  // Optionally, get other props.
+  const isPremium = AuthUser.claims?.stripeRole ? true : false;
+
+  if (isPremium) {
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+});
+
+export default withAuthUser<any>()(PaymentHome);

@@ -3,15 +3,18 @@ import Link from "next/link";
 
 import { FaWhatsapp } from "react-icons/fa";
 import { Layout } from "../components";
+import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
 
 type Props = {};
 
 const PrivacyPolicy: NextPage<Props> = () => {
+  const AuthUser = useAuthUser();
   return (
     <>
       <Layout
         title="Política de Privacidad"
         description="Política de Privacidad de EncuestApp"
+        AuthUser={AuthUser}
       >
         <div className="background-svg absolute inset-x-0 -top-40   transform-gpu overflow-hidden blur-3xl sm:-top-80">
           <svg
@@ -267,4 +270,6 @@ const PrivacyPolicy: NextPage<Props> = () => {
   );
 };
 
-export default PrivacyPolicy;
+export default withAuthUser<any>({
+  whenAuthed: AuthAction.RENDER,
+})(PrivacyPolicy);

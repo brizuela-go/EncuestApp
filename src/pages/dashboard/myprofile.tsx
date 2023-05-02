@@ -8,6 +8,11 @@ import { AiFillGoogleCircle, AiOutlineGithub } from "react-icons/ai";
 import { BsFacebook } from "react-icons/bs";
 
 import Image from "next/image";
+import {
+  AuthAction,
+  withAuthUser,
+  withAuthUserTokenSSR,
+} from "next-firebase-auth";
 
 type Props = {};
 
@@ -90,4 +95,26 @@ const MyProfile: NextPage<Props> = () => {
   );
 };
 
-export default MyProfile;
+export const getServerSideProps = withAuthUserTokenSSR({
+  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
+  whenAuthed: AuthAction.RENDER,
+})(async ({ AuthUser }) => {
+  // Optionally, get other props.
+  const isPremium = AuthUser.claims?.stripeRole ? true : false;
+
+  if (!isPremium) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+});
+
+export default withAuthUser<any>({
+  whenAuthed: AuthAction.RENDER,
+})(MyProfile);

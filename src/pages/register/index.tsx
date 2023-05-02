@@ -1,29 +1,18 @@
 import Auth from "../../components/Auth";
-import firebase from "../../firebase/firebaseClient";
-import { useAuthState } from "react-firebase-hooks/auth";
-import usePremiumStatus from "../../stripe/usePremiumStatus";
 import Image from "next/image";
 
 import { NextPage } from "next";
-import { useRouter } from "next/router";
 import Head from "next/head";
+import {
+  AuthAction,
+  withAuthUser,
+  withAuthUserTokenSSR,
+} from "next-firebase-auth";
+import { LoadingLogo } from "../../components";
 
 type Props = {};
 
-const Home: NextPage<Props> = () => {
-  const [user, userLoading] = useAuthState(firebase.auth());
-  const userIsPremium = usePremiumStatus(user as firebase.User);
-
-  const router = useRouter();
-
-  if (user) {
-    if (userIsPremium) {
-      router.push("/dashboard");
-    } else {
-      router.push("/payment");
-    }
-  }
-
+const Register: NextPage<Props> = () => {
   return (
     <>
       <Head>
@@ -128,4 +117,31 @@ const Home: NextPage<Props> = () => {
   );
 };
 
-export default Home;
+export const getServerSideProps = withAuthUserTokenSSR({
+  appPageURL: "/payment",
+  whenAuthed: AuthAction.REDIRECT_TO_APP,
+})(async ({ AuthUser }) => {
+  // Optionally, get other props.
+  const isPremium = AuthUser.claims?.stripeRole ? true : false;
+
+  console.log(isPremium);
+
+  if (isPremium) {
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+});
+
+export default withAuthUser<any>({
+  appPageURL: "/payment",
+  LoaderComponent: LoadingLogo,
+  whenAuthedBeforeRedirect: AuthAction.RENDER,
+  whenAuthed: AuthAction.REDIRECT_TO_APP,
+})(Register);

@@ -9,44 +9,28 @@ import {
   FaQuestionCircle,
 } from "react-icons/fa";
 import Link from "next/link";
-import { ReactElement, useEffect } from "react";
+import { ReactElement } from "react";
 import { useRouter } from "next/router";
 
-import { useAuthState } from "react-firebase-hooks/auth";
-import firebase from "../firebase/firebaseClient";
 import { toast } from "react-hot-toast";
 import { RiSurveyLine } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
 import Head from "next/head";
-import usePremiumStatus from "../stripe/usePremiumStatus";
+
+import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
 
 const Navbar = () => {
-  const [user, userLoading] = useAuthState(firebase.auth());
-  const isPremium = usePremiumStatus(user as firebase.User);
+  const AuthUser = useAuthUser();
 
   async function signOut() {
     try {
-      await firebase.auth().signOut();
+      await AuthUser.signOut();
     } catch (error) {
       toast.error("Error al cerrar sesión");
     }
   }
 
-  const router = useRouter();
-
-  useEffect(() => {
-    if (user && !userLoading) {
-      if (!isPremium) {
-        router.push("/");
-      }
-    }
-  }, [user, userLoading, router, isPremium]);
-
-  useEffect(() => {
-    if (userLoading && !user) {
-      router.push("/");
-    }
-  }, [userLoading, router, user]);
+  // promise to check if the user is premium
 
   return (
     <nav className="navbar relative z-10 border border-x-0 border-t-0  border-transparent  bg-slate-400 bg-opacity-10 backdrop-blur-xl backdrop:opacity-20 dark:border-[#0e1320] dark:bg-[#232d40] dark:bg-opacity-20 dark:backdrop-blur-3xl">
@@ -73,12 +57,12 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         <div className="dropdown-end dropdown">
-          {user && !userLoading && user.photoURL ? (
+          {AuthUser?.clientInitialized && AuthUser?.photoURL ? (
             <div className="group btn-ghost btn-square avatar btn" tabIndex={0}>
               <div className="btn-sm btn-circle transition duration-300 ease-in-out lg:group-hover:scale-105 lg:group-hover:rounded-xl ">
                 <Image
-                  src={user?.photoURL || ""}
-                  alt={user?.displayName || "User"}
+                  src={AuthUser?.photoURL && AuthUser?.photoURL}
+                  alt={AuthUser?.displayName || "User"}
                   width={50}
                   height={50}
                   priority={true}
@@ -364,4 +348,8 @@ const DashboardLayout: React.FC<LayoutProps> = ({
   );
 };
 
-export default DashboardLayout;
+export default withAuthUser<any>({
+  whenAuthed: AuthAction.RENDER,
+  whenAuthedBeforeRedirect: AuthAction.RENDER,
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+})(DashboardLayout);

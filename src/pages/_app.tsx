@@ -5,6 +5,10 @@ import { Analytics } from "@vercel/analytics/react";
 import { FaArrowUp } from "react-icons/fa";
 import { useState } from "react";
 
+import initAuth from "../firebase/initAuth";
+
+initAuth();
+
 type MyAppProps = {
   Component: React.ComponentType;
   pageProps: any;

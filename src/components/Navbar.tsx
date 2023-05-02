@@ -2,15 +2,11 @@ import { useState } from "react";
 
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { FiLogOut } from "react-icons/fi";
 
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-
-import firebase from "../firebase/firebaseClient";
-
-import { useAuthState } from "react-firebase-hooks/auth";
+import { AuthUserContext, useAuthUser } from "next-firebase-auth";
 
 const navigation = [
   { name: "Producto", href: "#producto" },
@@ -19,11 +15,14 @@ const navigation = [
   { name: "Política de Privacidad", href: "/politica-de-privacidad" },
 ];
 
-type Props = {};
+type Props = {
+  AuthUser: AuthUserContext;
+};
 
-const Navbar: React.FC<Props> = () => {
+const Navbar: React.FC<Props> = ({ AuthUser }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [user, userLoading] = useAuthState(firebase.auth());
+
+  const user = Boolean(AuthUser?.id);
 
   const router = useRouter();
 
@@ -73,23 +72,27 @@ const Navbar: React.FC<Props> = () => {
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          {userLoading ? (
-            <div className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100"></div>
-          ) : user ? (
-            <div className="flex text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">
-              <button onClick={() => firebase.auth().signOut()}>
-                Cerrar Sesión
-              </button>
-            </div>
-          ) : (
-            <Link href="/login">
+          {!user ? (
+            <Link className="group" href="/login">
               <button
                 type="button"
-                className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100"
+                className=" text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100"
               >
-                Iniciar Sesión <span aria-hidden="true">&rarr;</span>
+                <div className=" flex flex-wrap place-items-center justify-center">
+                  Iniciar Sesión{" "}
+                  <p
+                    className=" ml-2 transition duration-300 ease-in-out group-hover:translate-x-1 group-hover:scale-105 "
+                    aria-hidden="true"
+                  >
+                    ➜
+                  </p>
+                </div>
               </button>
             </Link>
+          ) : (
+            <div className="flex text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">
+              <button onClick={() => AuthUser.signOut()}>Cerrar Sesión</button>
+            </div>
           )}
         </div>
       </nav>
@@ -139,9 +142,9 @@ const Navbar: React.FC<Props> = () => {
                 ))}
               </div>
               <div className="py-6">
-                {!userLoading && user ? (
+                {user ? (
                   <div className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-700">
-                    <button onClick={() => firebase.auth().signOut()}>
+                    <button onClick={() => AuthUser.signOut()}>
                       Cerrar Sesión
                     </button>
                   </div>
