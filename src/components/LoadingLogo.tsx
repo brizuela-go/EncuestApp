@@ -11,10 +11,11 @@ const LoadingLogo: React.FC<Props> = () => {
         <Image
           src="/logo.png"
           alt="EncuestApp"
-          width={100}
-          height={100}
-          priority={true}
-          className="rounded-full"
+          width={200}
+          height={200}
+          priority
+          quality={100}
+          className="entrance rounded-full"
         />
         <h1 className="animate-pulse text-2xl font-bold text-gray-800 dark:text-gray-100">
           Cargando...

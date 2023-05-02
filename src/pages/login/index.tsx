@@ -141,6 +141,6 @@ export const getServerSideProps = withAuthUserTokenSSR({
 export default withAuthUser<any>({
   appPageURL: "/payment",
   LoaderComponent: LoadingLogo,
-  whenAuthedBeforeRedirect: AuthAction.RENDER,
+  whenAuthedBeforeRedirect: AuthAction.SHOW_LOADER,
   whenAuthed: AuthAction.REDIRECT_TO_APP,
 })(Login);

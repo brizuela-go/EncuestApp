@@ -12,19 +12,20 @@ import Link from "next/link";
 import { ReactElement } from "react";
 import { useRouter } from "next/router";
 
-import { toast } from "react-hot-toast";
+import { LoaderIcon, toast } from "react-hot-toast";
 import { RiSurveyLine } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
 import Head from "next/head";
 
 import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
+import LoadingLogo from "./LoadingLogo";
 
 const Navbar = () => {
   const AuthUser = useAuthUser();
 
-  async function signOut() {
+  function signOut() {
     try {
-      await AuthUser.signOut();
+      AuthUser.signOut();
     } catch (error) {
       toast.error("Error al cerrar sesión");
     }
@@ -350,5 +351,6 @@ const DashboardLayout: React.FC<LayoutProps> = ({
 
 export default withAuthUser<any>({
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-  whenUnauthedBeforeInit: AuthAction.RENDER,
+  LoaderComponent: LoadingLogo,
+  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
 })(DashboardLayout);
