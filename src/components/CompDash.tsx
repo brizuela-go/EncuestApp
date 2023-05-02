@@ -201,24 +201,28 @@ const CompDash = () => {
                 <Link
                   href={"/dashboard/myprofile"}
                   className={
-                    "card mb-10 transform bg-[url('/lightprofilecard.jpg')] bg-cover px-6 pt-9 pb-3 text-blue-50 shadow-xl hue-rotate-15 filter transition duration-300 ease-in-out  hover:-translate-y-1 hover:text-blue-900 hover:opacity-90  hover:shadow-2xl hover:brightness-100   dark:bg-[url('/profilecard.png')] dark:filter-none dark:hover:text-white dark:hover:filter-none"
+                    "group card mb-10 transform bg-[url('/lightprofilecard.jpg')] bg-cover px-6 pt-9 pb-3 text-blue-50 shadow-xl hue-rotate-15 filter transition duration-300 ease-in-out  hover:-translate-y-1 hover:text-blue-900 hover:opacity-90  hover:shadow-2xl hover:brightness-100   dark:bg-[url('/profilecard.png')] dark:filter-none dark:hover:text-white dark:hover:filter-none"
                   }
                 >
                   <div className="">
-                    <p className="mb-1 text-sm text-slate-400">
-                      Bienvenido de vuelta,
+                    <p className="mb-1 text-sm text-slate-100 dark:text-slate-300">
+                      ¡Bienvenido de vuelta,
                     </p>
                     <h4 className="mb-5 text-3xl font-bold  ">
-                      {AuthUser?.displayName}
+                      {AuthUser?.displayName}!
                     </h4>
-                    <p className="mb-1 text-slate-400">
+                    <p className="mb-1 text-slate-100 dark:text-slate-300">
                       ¡Encantado de verte de vuelta!
                     </p>
-                    <p className="mb-9 text-slate-400">Sigue encuestappeando</p>
-                    <p className="text-sm">
-                      Pulsa aquí para ir a tu perfil{" "}
-                      <span className="translate">➜</span>
+                    <p className="mb-9 text-slate-100 dark:text-slate-300">
+                      Sigue encuestappeando 🤙
                     </p>
+                    <div className="flex flex-wrap place-items-center items-center justify-start gap-2  text-sm">
+                      Pulsa aquí para ir a tu perfil{" "}
+                      <div className="my-1 transition duration-300 ease-in-out group-hover:translate-x-2">
+                        ➜
+                      </div>
+                    </div>
                   </div>
                 </Link>
                 <div className="grid grid-cols-1 items-center gap-4 md:grid-cols-2 lg:grid-cols-2 lg:gap-x-7 lg:gap-y-6  ">

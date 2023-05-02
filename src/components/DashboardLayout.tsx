@@ -9,7 +9,7 @@ import {
   FaQuestionCircle,
 } from "react-icons/fa";
 import Link from "next/link";
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import { useRouter } from "next/router";
 
 import { toast } from "react-hot-toast";
@@ -19,6 +19,7 @@ import Head from "next/head";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "../firebase/firebaseClient";
+import { ClipLoader } from "react-spinners";
 
 const Navbar = () => {
   const [user] = useAuthState(firebase.auth());
@@ -106,6 +107,15 @@ type Props = {
 
 const DrawerContent = ({ children }: Props) => {
   const router = useRouter();
+
+  const [routeChanged, setrouteChanged] = useState(false);
+
+  router?.events?.on("routeChangeStart", () => {
+    setrouteChanged(true);
+  });
+  router?.events?.on("routeChangeComplete", () => {
+    setrouteChanged(false);
+  });
 
   const links = [
     { href: "/dashboard", label: "Inicio", icon: <FaRegChartBar /> },
@@ -232,6 +242,14 @@ const DrawerContent = ({ children }: Props) => {
         </ul>
       </div>
 
+      <ClipLoader
+        color="#3AE"
+        loading={routeChanged}
+        speedMultiplier={0.8}
+        size={30}
+        className="fixed bottom-2 right-0 mb-5 mr-5"
+      />
+
       {children}
     </div>
   );
@@ -333,6 +351,8 @@ const DashboardLayout: React.FC<LayoutProps> = ({
   title,
   description,
 }) => {
+  const router = useRouter();
+
   return (
     <>
       <Head>
@@ -345,7 +365,9 @@ const DashboardLayout: React.FC<LayoutProps> = ({
       <main className="dark:bg-[#0E1320]">
         <div className="drawer-mobile drawer">
           <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+
           <DrawerContent>{children as any}</DrawerContent>
+
           <DrawerSide />
         </div>
       </main>
