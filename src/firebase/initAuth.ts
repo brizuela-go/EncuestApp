@@ -16,16 +16,10 @@ const { private_key } = privateKey || {};
 
 const initAuth = () => {
   init({
-    authPageURL: "/login",
+    authPageURL: "/",
     appPageURL: "/dashboard",
     loginAPIEndpoint: "/api/login",
     logoutAPIEndpoint: "/api/logout",
-    onLoginRequestError: (err) => {
-      console.error(err);
-    },
-    onLogoutRequestError: (err) => {
-      console.error(err);
-    },
     firebaseAdminInitConfig: {
       credential: {
         projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "",
@@ -39,9 +33,9 @@ const initAuth = () => {
     // useFirebaseAdminDefaultCredential: true,
     firebaseClientInitConfig: {
       apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "",
-      authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "",
-      databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL || "",
-      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "",
+      authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+      databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
+      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
     },
     cookies: {
       name: process.env.COOKIE_NAME, // required
@@ -58,12 +52,6 @@ const initAuth = () => {
       sameSite: "strict",
       secure: true, // set this to false in local (non-HTTPS) development
       signed: true,
-    },
-    onVerifyTokenError: (err) => {
-      console.error(err);
-    },
-    onTokenRefreshError: (err) => {
-      console.error(err);
     },
   });
 };
