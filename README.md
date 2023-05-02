@@ -116,6 +116,8 @@ encuestApp
 │  │  ├─ api
 │  │  │  └─ index.ts
 |  |  |  └─ insight.ts
+│  │  |  └─ login.ts
+│  │  |  └─ logout.ts
 │  │  ├─ dashboard
 │  │  │  ├─ crear-encuesta.tsx
 │  │  │  ├─ index.tsx
