@@ -3,6 +3,7 @@ import Link from "next/link";
 import { NextPage } from "next";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
 
 type Props = {};
 
@@ -10,6 +11,8 @@ const FourOFour: NextPage<Props> = () => {
   const [gifUrl, setGifUrl] = useState<string>("");
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [inDashboard, setInDashboard] = useState<boolean>(false);
+
+  const AuthUser = useAuthUser();
 
   useEffect(() => {
     const loadGif = async () => {
@@ -42,6 +45,7 @@ const FourOFour: NextPage<Props> = () => {
       <Layout
         title="404 | Página No Encontrada"
         description="404 | Página No Encontrada"
+        AuthUser={AuthUser}
       >
         <section className="flex flex-col place-items-center items-center  justify-center py-28 px-8 text-center sm:py-28 lg:px-8">
           <div className="absolute isolate px-6 pt-14 lg:px-8">
@@ -110,4 +114,6 @@ const FourOFour: NextPage<Props> = () => {
   );
 };
 
-export default FourOFour;
+export default withAuthUser<any>({
+  whenAuthed: AuthAction.RENDER,
+})(FourOFour);
