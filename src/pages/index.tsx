@@ -27,6 +27,4 @@ const Home: NextPage<Props> = () => {
   );
 };
 
-export default withAuthUser<any>({
-  whenAuthed: AuthAction.RENDER,
-})(Home);
+export default withAuthUser<any>()(Home);

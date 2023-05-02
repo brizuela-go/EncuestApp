@@ -114,6 +114,4 @@ const FourOFour: NextPage<Props> = () => {
   );
 };
 
-export default withAuthUser<any>({
-  whenAuthed: AuthAction.RENDER,
-})(FourOFour);
+export default withAuthUser<any>()(FourOFour);

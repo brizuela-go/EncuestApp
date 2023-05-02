@@ -270,6 +270,4 @@ const PrivacyPolicy: NextPage<Props> = () => {
   );
 };
 
-export default withAuthUser<any>({
-  whenAuthed: AuthAction.RENDER,
-})(PrivacyPolicy);
+export default withAuthUser<any>()(PrivacyPolicy);

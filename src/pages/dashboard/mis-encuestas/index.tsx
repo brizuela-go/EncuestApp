@@ -36,6 +36,4 @@ export const getServerSideProps = withAuthUserTokenSSR({
   };
 });
 
-export default withAuthUser<any>({
-  whenAuthed: AuthAction.RENDER,
-})(MisEncuestas);
+export default withAuthUser<any>()(MisEncuestas);

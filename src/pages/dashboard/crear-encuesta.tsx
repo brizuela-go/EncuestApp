@@ -39,6 +39,4 @@ export const getServerSideProps = withAuthUserTokenSSR({
   };
 });
 
-export default withAuthUser<any>({
-  whenAuthed: AuthAction.RENDER,
-})(CrearEncuesta);
+export default withAuthUser<any>()(CrearEncuesta);

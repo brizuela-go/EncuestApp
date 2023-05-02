@@ -349,7 +349,6 @@ const DashboardLayout: React.FC<LayoutProps> = ({
 };
 
 export default withAuthUser<any>({
-  whenAuthed: AuthAction.RENDER,
-  whenAuthedBeforeRedirect: AuthAction.RENDER,
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+  whenUnauthedBeforeInit: AuthAction.RENDER,
 })(DashboardLayout);
