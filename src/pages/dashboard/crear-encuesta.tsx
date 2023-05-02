@@ -22,7 +22,6 @@ const CrearEncuesta: NextPage<Props> = () => {
 
 export const getServerSideProps = withAuthUserTokenSSR({
   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-  whenAuthed: AuthAction.RENDER,
 })(async ({ AuthUser }) => {
   // Optionally, get other props.
   const isPremium = AuthUser.claims?.stripeRole ? true : false;
