@@ -83,4 +83,6 @@ export const getServerSideProps = withAuthUserTokenSSR({
   };
 });
 
-export default withAuthUser<any>()(Help);
+export default withAuthUser<any>({
+  whenAuthed: AuthAction.RENDER,
+})(Help);

@@ -44,4 +44,6 @@ export const getServerSideProps = withAuthUserTokenSSR({
   };
 });
 
-export default withAuthUser<any>()(Survey);
+export default withAuthUser<any>({
+  whenAuthed: AuthAction.RENDER,
+})(Survey);

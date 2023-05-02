@@ -6,7 +6,7 @@ type Props = {};
 
 const LoadingLogo: React.FC<Props> = () => {
   return (
-    <div className="flex h-screen items-center justify-center">
+    <div className="entrance flex h-screen items-center justify-center">
       <div className="flex flex-col items-center justify-center space-y-4">
         <Image
           src="/logo.png"
@@ -15,7 +15,7 @@ const LoadingLogo: React.FC<Props> = () => {
           height={200}
           priority
           quality={100}
-          className="entrance rounded-full"
+          className="rounded-full"
         />
         <h1 className="animate-pulse text-2xl font-bold text-gray-800 dark:text-gray-100">
           Cargando...

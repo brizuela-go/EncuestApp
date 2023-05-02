@@ -6,7 +6,14 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { AuthUserContext, useAuthUser } from "next-firebase-auth";
+import {
+  AuthAction,
+  AuthUserContext,
+  useAuthUser,
+  withAuthUser,
+} from "next-firebase-auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+import firebase from "../firebase/firebaseClient";
 
 const navigation = [
   { name: "Producto", href: "#producto" },
@@ -22,7 +29,7 @@ type Props = {
 const Navbar: React.FC<Props> = ({ AuthUser }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const user = Boolean(AuthUser?.id);
+  const [user] = useAuthState(firebase.auth());
 
   const router = useRouter();
 

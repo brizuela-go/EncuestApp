@@ -16,7 +16,6 @@ import QuestionTypeDropdown, { QuestionType } from "./QuestionTypeDropdown";
 import { questionTypes } from "../utils/questionTypes";
 import { BsTrash } from "react-icons/bs";
 import { FiMinusCircle, FiPlusCircle } from "react-icons/fi";
-import { FaSignature } from "react-icons/fa";
 import Signature from "./Signature";
 
 type Props = {};

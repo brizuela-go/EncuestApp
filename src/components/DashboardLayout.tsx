@@ -12,20 +12,25 @@ import Link from "next/link";
 import { ReactElement } from "react";
 import { useRouter } from "next/router";
 
-import { LoaderIcon, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { RiSurveyLine } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
 import Head from "next/head";
 
-import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
-import LoadingLogo from "./LoadingLogo";
+import { AuthAction, withAuthUser } from "next-firebase-auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+import firebase from "../firebase/firebaseClient";
 
 const Navbar = () => {
-  const AuthUser = useAuthUser();
+  const [user] = useAuthState(firebase.auth());
 
-  function signOut() {
+  const router = useRouter();
+
+  async function signOut() {
     try {
-      AuthUser.signOut();
+      await firebase.auth().signOut();
+      router.push("/");
+      toast.success("¡Regresa pronto! 👋");
     } catch (error) {
       toast.error("Error al cerrar sesión");
     }
@@ -58,12 +63,12 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         <div className="dropdown-end dropdown">
-          {AuthUser?.clientInitialized && AuthUser?.photoURL ? (
+          {user?.photoURL ? (
             <div className="group btn-ghost btn-square avatar btn" tabIndex={0}>
               <div className="btn-sm btn-circle transition duration-300 ease-in-out lg:group-hover:scale-105 lg:group-hover:rounded-xl ">
                 <Image
-                  src={AuthUser?.photoURL && AuthUser?.photoURL}
-                  alt={AuthUser?.displayName || "User"}
+                  src={user?.photoURL}
+                  alt={user?.displayName || "User"}
                   width={50}
                   height={50}
                   priority={true}
@@ -349,8 +354,4 @@ const DashboardLayout: React.FC<LayoutProps> = ({
   );
 };
 
-export default withAuthUser<any>({
-  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-  LoaderComponent: LoadingLogo,
-  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
-})(DashboardLayout);
+export default DashboardLayout;
