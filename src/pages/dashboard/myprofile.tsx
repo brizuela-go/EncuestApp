@@ -101,24 +101,23 @@ const MyProfile: NextPage<Props> = () => {
     toast.success("¡Biografía guardada exitosamente 🖊️!");
   }
 
-  async function getBio() {
-    if (!user) {
-      return;
-    }
-    firebase
-      .firestore()
-      .collection("users")
-      .doc(user.uid)
-      .onSnapshot((doc) => {
-        if (doc.exists) {
-          setBio(doc.data()?.bio);
-        }
-      });
-  }
-
   useEffect(() => {
+    async function getBio() {
+      if (!user) {
+        return;
+      }
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(user.uid)
+        .onSnapshot((doc) => {
+          if (doc.exists) {
+            setBio(doc.data()?.bio);
+          }
+        });
+    }
     getBio();
-  }, [user, getBio]);
+  }, [user]);
 
   return (
     <DashboardLayout title="Mi Perfil" description="Mi Perfil">
