@@ -6,15 +6,18 @@ import Link from "next/link";
 import { z } from "zod";
 import toast from "react-hot-toast";
 import {
+  RiAddLine,
+  RiDeleteBinLine,
   RiErrorWarningFill,
   RiFileCopy2Line,
   RiImageAddFill,
+  RiSave2Line,
 } from "react-icons/ri";
 import QuestionSchema from "../schemas/QuestionSchema";
 import SurveySchema from "../schemas/SurveySchema";
 import QuestionTypeDropdown, { QuestionType } from "./QuestionTypeDropdown";
 import { questionTypes } from "../utils/questionTypes";
-import { BsTrash } from "react-icons/bs";
+import { BsArrowCounterclockwise, BsTrash } from "react-icons/bs";
 import { FiMinusCircle, FiPlusCircle } from "react-icons/fi";
 import Signature from "./Signature";
 
@@ -282,7 +285,7 @@ const CreadorDeEncuestas: React.FC<Props> = () => {
           </section>
         </>
       ) : (
-        <section className="isolate px-4">
+        <section className="isolate my-10 px-4">
           <h1 className="dashboard-title mt-5">Crear encuesta</h1>
           <form>
             <div className="entrance m-4 flex flex-col rounded-lg bg-gray-100 bg-opacity-10 p-6 shadow-xl backdrop-blur-xl backdrop:opacity-20 dark:bg-gray-900 dark:bg-opacity-20  dark:backdrop-blur-3xl sm:p-12 ">
@@ -899,22 +902,51 @@ const CreadorDeEncuestas: React.FC<Props> = () => {
                 </div>
               );
             })}
+            <div className="fixed top-20 right-6 flex flex-col justify-center space-y-5 rounded-full bg-slate-200 bg-opacity-20 px-3 py-6 shadow-xl  backdrop-blur-sm dark:bg-slate-900 dark:bg-opacity-30">
+              <div className="tooltip tooltip-left" data-tip="Agregar Pregunta">
+                <button
+                  className=" btn-outline btn-primary btn-circle btn"
+                  type="button"
+                  onClick={addQuestion}
+                >
+                  <RiAddLine className="text-lg" />
+                </button>
+              </div>
+              <div
+                className="tooltip tooltip-left"
+                data-tip="Resetear Encuesta"
+              >
+                <button className="btn-outline btn-circle btn" type="reset">
+                  <BsArrowCounterclockwise className="text-lg" />
+                </button>
+              </div>
+              <div className="tooltip tooltip-left" data-tip="Guardar">
+                <button
+                  type="button"
+                  className="btn-outline btn-success btn-circle btn"
+                  onClick={saveSurvey}
+                >
+                  <RiSave2Line className="text-lg" />
+                </button>
+              </div>
+            </div>
           </form>
-          <div className="flex justify-center">
+
+          <div className="my-16 flex justify-center gap-6 ">
             <button
-              className="btn-primary btn-md btn"
+              className="btn-primary btn-md btn gap-2"
               type="button"
               onClick={addQuestion}
             >
+              <RiAddLine className="text-lg" />
               Agregar pregunta
             </button>
-          </div>
-          <div className=" flex justify-center">
             <button
-              className="btn-success btn-md btn"
+              className="btn-outline btn-success btn-md btn gap-2"
               type="button"
               onClick={saveSurvey}
             >
+              <RiSave2Line className="text-lg" />
               Guardar
             </button>
           </div>

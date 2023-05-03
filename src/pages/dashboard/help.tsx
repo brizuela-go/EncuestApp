@@ -49,7 +49,7 @@ const Help: NextPage<Props> = () => {
     >
       <section className="entrance  card m-3 bg-slate-300 bg-opacity-20 p-6 dark:bg-slate-900  dark:bg-opacity-50 dark:text-gray-100 lg:m-10 lg:p-10">
         <div className="container mx-auto flex flex-col justify-center px-4 py-8 md:p-8">
-          <h2 className="text-2xl font-semibold sm:text-4xl">
+          <h2 className="text-2xl font-bold   sm:text-4xl">
             Preguntas frecuentes
           </h2>
           <div className="mt-4 mb-8 dark:text-gray-200">

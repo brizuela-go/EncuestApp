@@ -4,7 +4,11 @@ import { NextPage } from "next";
 import firebase from "../../firebase/firebaseClient";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-import { AiFillGoogleCircle, AiOutlineGithub } from "react-icons/ai";
+import {
+  AiFillGoogleCircle,
+  AiOutlineGithub,
+  AiOutlineSave,
+} from "react-icons/ai";
 import { BsFacebook } from "react-icons/bs";
 
 import Image from "next/image";
@@ -13,12 +17,108 @@ import {
   withAuthUser,
   withAuthUserTokenSSR,
 } from "next-firebase-auth";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "react-hot-toast";
 
 type Props = {};
 
+type VibeType = "Profesional" | "Chistosa" | "Pretenciosa" | "Linda" | "Cool";
+
 const MyProfile: NextPage<Props> = () => {
   const [user, userLoading] = useAuthState(firebase.auth());
-  console.log(user);
+  const [loading, setLoading] = useState(false);
+  const [bio, setBio] = useState("");
+  const [vibe, setVibe] = useState<VibeType>("Profesional");
+  const [generatedBio, setGeneratedBio] = useState<String>("");
+  const [saved, setSaved] = useState(false);
+
+  const bioRef = useRef<null | HTMLDivElement>(null);
+
+  const scrollToBio = () => {
+    if (bioRef.current !== null) {
+      bioRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const prompt = `Genera 1 biografía ${vibe}. Se creativo y original.  ${
+    vibe === "Chistosa"
+      ? "Asegúrate de que sea ridícula e incluya un chiste."
+      : null
+  }
+      Asegúrate de que la biografía generada tenga menos de 100 caractéres, tenga oraciones cortas, parecidas a las de Twitter, usa emojis y hashtags si quieres, y finalmente, básate en el siguiente contexto: ${bio} 
+      ${
+        user?.displayName
+      } 🇲🇽 México, Puebla. Amante de las encuestas y EncuestApp.
+      ${bio.slice(-1) === "." ? "" : "."}`;
+
+  const generateBio = async (e: any) => {
+    e.preventDefault();
+    setBio("");
+    setGeneratedBio("");
+    setLoading(true);
+    const response = await fetch("/api/description", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prompt,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    // This data is a ReadableStream
+    const data = response.body;
+    if (!data) {
+      return;
+    }
+
+    const reader = data.getReader();
+    const decoder = new TextDecoder();
+    let done = false;
+
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      const chunkValue = decoder.decode(value);
+      setGeneratedBio((prev) => prev + chunkValue);
+    }
+    scrollToBio();
+    setLoading(false);
+  };
+
+  async function saveBio() {
+    if (!user) {
+      return;
+    }
+    await firebase.firestore().collection("users").doc(user.uid).update({
+      bio: generatedBio,
+    });
+    setSaved(true);
+    toast.success("¡Biografía guardada exitosamente 🖊️!");
+  }
+
+  async function getBio() {
+    if (!user) {
+      return;
+    }
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(user.uid)
+      .onSnapshot((doc) => {
+        if (doc.exists) {
+          setBio(doc.data()?.bio);
+        }
+      });
+  }
+
+  useEffect(() => {
+    getBio();
+  }, [user]);
 
   return (
     <DashboardLayout title="Mi Perfil" description="Mi Perfil">
@@ -88,15 +188,35 @@ const MyProfile: NextPage<Props> = () => {
           </div>
           <div className="mt-12 flex flex-col justify-center space-y-8">
             <p className="lg:px-16dark:text-white text-center font-light text-gray-800 dark:text-white">
-              Descripción
+              {generatedBio && !bio ? generatedBio : bio}
             </p>
             <button
-              className="btn-outline  btn-accent btn mx-auto w-1/2 justify-center shadow-lg hover:shadow-xl
-            "
+              type="button"
+              onClick={generateBio}
+              className={`${
+                loading && "loading"
+              } btn-outline  btn-accent btn mx-auto justify-center shadow-lg hover:shadow-xl lg:w-1/2`}
             >
-              Generar Descripción con IA 🖊️ 🤖
+              {bio
+                ? "Generar Nueva Descripción con IA 🖊️ 🤖"
+                : "Generar Descripción con IA 🖊️ 🤖"}
             </button>
           </div>
+          {/* save  */}
+          {generatedBio && !saved && (
+            <div className="mt-12 flex flex-col justify-center space-y-8">
+              <button
+                type="button"
+                onClick={saveBio}
+                className={`${
+                  saved && "loading"
+                } btn-success btn fixed bottom-8 right-6  shadow-lg hover:shadow-xl  `}
+              >
+                <AiOutlineSave className="mr-2 text-lg" />
+                Guardar Descripción
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </DashboardLayout>

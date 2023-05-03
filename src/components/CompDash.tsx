@@ -20,6 +20,7 @@ const RINGS_MAX_R = 3;
 
 const CompDash = () => {
   const [user, userLoading] = useAuthState(firebase.auth());
+
   const AuthUser = useAuthUser();
 
   let cardClass =
@@ -183,11 +184,45 @@ const CompDash = () => {
     },
   ];
 
+  // quote of the day
+  const [quote, setQuote] = useState("");
+  const [author, setAuthor] = useState("");
+
+  useEffect(() => {
+    async function getQuote() {
+      await fetch("https://api.quotable.io/random")
+        .then((response) => response.json())
+        .then((data) => {
+          const quote = data.content;
+          const author = data.author;
+          translateQuote(quote, `- ${author}`);
+          setAuthor(author);
+        });
+    }
+
+    async function translateQuote(quote: string, author: string) {
+      const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=es&dt=t&q=${quote}`;
+      await fetch(url)
+        .then((response) => response.json())
+        .then((data) => {
+          let translatedQuote = "";
+          for (let i = 0; i < data[0].length; i++) {
+            if (data[0][i][0]) {
+              translatedQuote += data[0][i][0];
+            }
+          }
+          setQuote(translatedQuote);
+        });
+    }
+
+    getQuote();
+  }, []);
+
   return (
     <div className="flex w-full justify-center overflow-x-hidden">
       <div className="container my-5 mx-0 px-4 sm:px-0 md:px-5 ">
         <h1 className="dashboard-title md:ml-5 md:text-left ">
-          Estadísitcas Generales
+          Estadísticas Generales
         </h1>
         {!loaded && !responses.length ? (
           <div className="delay-nosurveys mt-28 flex items-center justify-center ">
@@ -286,7 +321,21 @@ const CompDash = () => {
                 />
               </div>
             </div>
-            <div className="flex flex-col justify-center sm:ml-5 lg:flex-row lg:justify-between "></div>
+            <div className="mt-5 flex justify-center rounded-2xl bg-gradient-to-r from-indigo-300 via-indigo-400 to-indigo-300 bg-cover p-10 shadow-xl dark:bg-[url('/quotewallpaper.png')] dark:brightness-95 dark:hue-rotate-15 dark:filter sm:mx-5">
+              {/* quote of the day title */}
+              <div className="flex flex-col items-center justify-center space-y-5 rounded-xl bg-white bg-opacity-20 p-5 dark:bg-black dark:bg-opacity-50">
+                <h4
+                  className="text-center text-2xl font-bold text-sky-50
+                first-letter:capitalize
+                "
+                >
+                  {quote}
+                </h4>
+                <h4 className="text-center text-2xl font-bold text-sky-50 ">
+                  - {author}
+                </h4>
+              </div>
+            </div>
           </section>
         )}
       </div>
