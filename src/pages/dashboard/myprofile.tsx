@@ -45,11 +45,11 @@ const MyProfile: NextPage<Props> = () => {
       ? "Asegúrate de que sea ridícula e incluya un chiste."
       : null
   }
-      Asegúrate de que la biografía generada tenga menos de 100 caractéres, tenga oraciones cortas, parecidas a las de Twitter, usa emojis y hashtags si quieres, y finalmente, básate en el siguiente contexto: ${bio} 
+      Asegúrate de que la biografía generada tenga menos de 100 caractéres, tenga oraciones cortas, parecidas a las de Twitter, usa emojis y hashtags si quieres, y finalmente, básate en el siguiente contexto: 
       ${
         user?.displayName
       } 🇲🇽 México, Puebla. Amante de las encuestas y EncuestApp.
-      ${bio.slice(-1) === "." ? "" : "."}`;
+      `;
 
   const generateBio = async (e: any) => {
     e.preventDefault();
