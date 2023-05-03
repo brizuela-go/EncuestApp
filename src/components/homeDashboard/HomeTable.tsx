@@ -26,7 +26,7 @@ const HomeTable = () => {
     },
     {
       id: "5NbpWFBGvnjkAjBzmEEY",
-      fecha: "30/04/2023",
+      fecha: "26/04/2023",
     },
   ];
 
