@@ -9,12 +9,13 @@ const QuestionSchema = z
       "checkbox",
       "dropdown",
       "boolean",
-      "imagepicker",
+      // "imagepicker",
       "ranking",
       "comment",
-      "matrix",
+      // "matrix",
       "signaturepad",
       "rating",
+      // "file",
     ]),
     name: z
       .string({

@@ -18,11 +18,12 @@ type Props = {
 };
 
 const SurveyComponent: React.FC<Props> = ({ id, data, user }) => {
-  // Create a modal
+  // Create a model
   const survey = new Model(data);
 
   // /components/survey/index.tsx
   survey.sendResultOnPageNext = true;
+
   const storageName = "SurveyNextjs";
   function saveSurveyData(survey: any) {
     let data = survey.data;
@@ -57,19 +58,17 @@ const SurveyComponent: React.FC<Props> = ({ id, data, user }) => {
   survey.onComplete.add(function (survey, options) {
     saveSurveyData(survey);
     saveSurveyToFirebase(survey);
-    console.log(survey.data);
-    // window.location.href = "/survey/finish";
   });
 
   // Render the survey
   return (
-    <section className="survey m-4 p-1 sm:m-8 md:px-40">
-      <div className=" mt-8 flex justify-center space-x-5 md:my-0 md:justify-end">
+    <section className="survey m-4 p-4 sm:m-8 md:py-10 md:px-40">
+      <div className=" mt-8 flex flex-col place-items-center items-center justify-center space-x-0 space-y-6 text-center md:my-0 md:flex-row md:justify-end md:space-x-5 md:space-y-0 md:text-start">
         <>
           <Image
             src={user.photoUrl}
-            width={40}
-            height={40}
+            width={50}
+            height={50}
             alt={user.name}
             className="rounded-full"
           />

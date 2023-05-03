@@ -6,8 +6,8 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import firebase from "../firebase/firebaseClient";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { PulseLoader } from "react-spinners";
-import { FaTasks } from "react-icons/fa";
-import { RiQuestionAnswerLine } from "react-icons/ri";
+import { FaCalendarWeek, FaTasks } from "react-icons/fa";
+import { RiEmotionHappyFill, RiQuestionAnswerLine } from "react-icons/ri";
 import Link from "next/link";
 import { useAuthUser } from "next-firebase-auth";
 
@@ -70,6 +70,10 @@ const CompDash = () => {
           setEncuestas(encuestasData as any);
         });
     };
+
+    setTimeout(() => {
+      setLoaded(true);
+    }, 2000);
 
     getEncuestas();
   }, [user, userLoading]);
@@ -172,15 +176,15 @@ const CompDash = () => {
     },
     {
       title: "Última Semana",
-      value: 0,
-      icon: <FaTasks />,
-      color: "bg-purple-400",
+      value: responses.length,
+      icon: <FaCalendarWeek />,
+      color: "bg-gradient-to-r from-orange-400 to-orange-700",
     },
     {
-      title: "Lol",
-      value: 0,
-      icon: <RiQuestionAnswerLine />,
-      color: "bg-blue-600",
+      title: "Retroalimentación",
+      value: "Buena",
+      icon: <RiEmotionHappyFill />,
+      color: "bg-gradient-to-r from-green-400 to-green-700",
     },
   ];
 

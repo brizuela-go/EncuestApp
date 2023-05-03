@@ -6,6 +6,7 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 
 import firebase from "../../firebase/firebaseClient";
+import Link from "next/link";
 
 const SurveyComponent = dynamic(
   () => import("../../components/SurveyComponent"),
@@ -79,7 +80,10 @@ const Survey: NextPage<Props> = ({ id, data, user }) => {
       </Head>
       <main>
         <nav className="navbar shadow-lg">
-          <div className="btn-ghost btn space-x-2 text-xl normal-case">
+          <Link
+            href="/"
+            className="btn-ghost btn space-x-2 text-xl normal-case"
+          >
             <Image
               src={"/logo.png"}
               alt={"EncuestApp"}
@@ -89,7 +93,7 @@ const Survey: NextPage<Props> = ({ id, data, user }) => {
               quality={100}
             />
             <span>EncuestApp</span>
-          </div>
+          </Link>
         </nav>
         <SurveyComponent id={id} data={data} user={user} />
       </main>

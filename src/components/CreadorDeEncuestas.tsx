@@ -108,13 +108,13 @@ const CreadorDeEncuestas: React.FC<Props> = () => {
     // validate surveyjson
     const parsedSurvey = SurveySchema.parseAsync({
       ...surveyJSON,
-      logo: "https://i.imgur.com/4ZQZQ9A.png",
+      logo: "/logo.png",
       locale: "es",
       logoWidth: "60px",
       logoHeight: "60px",
       logoPosition: "right",
       belongsTo: user?.uid,
-      createdAt: new Date().toLocaleString("es-ES", {
+      createdAt: new Date().toLocaleString("en-US", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
@@ -487,13 +487,17 @@ const CreadorDeEncuestas: React.FC<Props> = () => {
                                           disabled
                                           checked
                                         />
-                                      ) : (
+                                      ) : question.type === "checkbox" ? (
                                         <input
                                           type="checkbox"
                                           className="checkbox-primary checkbox checkbox-md cursor-not-allowed "
                                           disabled
                                           checked
                                         />
+                                      ) : (
+                                        <div className="text-center text-lg font-semibold opacity-50 ">
+                                          {choiceIndex + 1}
+                                        </div>
                                       )}
 
                                       <input
@@ -726,6 +730,7 @@ const CreadorDeEncuestas: React.FC<Props> = () => {
                       </div>
                     </div>
                   )}
+
                   {/* if type of question is signaturepad */}
                   {question.type === "signaturepad" && (
                     <div className="mb-14">

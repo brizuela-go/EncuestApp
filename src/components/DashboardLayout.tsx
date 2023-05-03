@@ -7,6 +7,8 @@ import {
   FaHome,
   FaPlusCircle,
   FaQuestionCircle,
+  FaInfo,
+  FaInfoCircle,
 } from "react-icons/fa";
 import Link from "next/link";
 import { ReactElement, useState } from "react";
@@ -318,19 +320,30 @@ const DrawerSide = () => {
         {/* li sticked to the bottom with some mb */}
         <li className=" fixed bottom-6">
           <Link
-            href={"/dashboard/help"}
+            href={
+              router.asPath === "/dashboard/help"
+                ? "/politica-de-privacidad"
+                : "/dashboard/help"
+            }
             className={
               "h-40 w-52 transform bg-[url('/faqs-card-light.png')] text-blue-50 shadow-xl brightness-90 contrast-125 hue-rotate-15  saturate-150 filter transition duration-300 ease-in-out  hover:-translate-y-1 hover:text-blue-900 hover:opacity-90  hover:shadow-2xl hover:brightness-100  dark:bg-[url('/faqs-card.png')] dark:filter-none dark:hover:text-white dark:hover:filter-none"
             }
           >
             <div className="flex-col place-items-center items-center justify-center space-y-3">
-              <FaQuestionCircle className="w-44 text-center text-2xl" />
-
-              <h4 className=" text-center text-xl font-bold  ">
-                ¿Necesitas ayuda?
+              {router.asPath === "/dashboard/help" ? (
+                <FaInfoCircle className="w-44 text-center text-2xl" />
+              ) : (
+                <FaQuestionCircle className="w-44 text-center text-2xl" />
+              )}
+              <h4 className=" text-center text-[1.22rem] font-bold  ">
+                {router.asPath === "/dashboard/help"
+                  ? "¿Más información?"
+                  : "¿Necesitas ayuda?"}
               </h4>
               <p className="text-center ">
-                Visita nuestra sección de preguntas frecuentes
+                {router.asPath === "/dashboard/help"
+                  ? "Visita nuestra política de privacidad"
+                  : "Visita nuestra sección de preguntas frecuentes"}
               </p>
             </div>
           </Link>

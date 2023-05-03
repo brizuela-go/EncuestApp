@@ -19,7 +19,7 @@ const QuestionTypeDropdown: React.FC<QuestionTypeDropdownProps> = ({
   setIsOpen,
 }) => {
   return (
-    <div className="dropdown-top dropdown md:dropdown-top md:dropdown-right md:dropdown-end">
+    <div className="dropdown dropdown-top md:dropdown-top md:dropdown-right md:dropdown-end">
       <label
         tabIndex={0}
         onClick={() => setIsOpen(true)}
@@ -44,15 +44,18 @@ const QuestionTypeDropdown: React.FC<QuestionTypeDropdownProps> = ({
             <button
               type="button"
               className={`tooltip flex flex-wrap text-sm md:tooltip-right 
-
+              ${qType.disabled && "disabled cursor-not-allowed opacity-50"}
               ${!isOpen && "group-focus-within:hidden"}
               
               `}
+              disabled={qType.disabled}
               onClick={() => {
                 setSelectedQuestionType(qType);
                 setIsOpen(false);
               }}
-              data-tip={`🛈  ${qType.info}`}
+              data-tip={`🛈  ${qType.info} ${
+                qType.disabled && " (No disponible por el momento)"
+              }`}
             >
               {qType.icon} {qType.label}
             </button>

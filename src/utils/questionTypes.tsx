@@ -9,8 +9,7 @@ import {
   BsStar,
 } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { FaRegComments, FaSignature } from "react-icons/fa";
-import { z } from "zod";
+import { FaFile, FaRegComments, FaSignature } from "react-icons/fa";
 
 export const questionTypes = [
   {
@@ -54,6 +53,7 @@ export const questionTypes = [
     label: "Selector de imágenes",
     icon: <BsImages />,
     info: "Respuesta única de un conjunto con imágenes.",
+    disabled: true,
   },
   {
     value: "ranking",
@@ -72,12 +72,20 @@ export const questionTypes = [
     label: "Matriz",
     icon: <BsUiRadiosGrid />,
     info: "Respuesta única para un conjunto de filas y columnas con botones de selección.",
+    disabled: true,
   },
   {
     value: "signaturepad",
     label: "Firma/Dibujo",
     icon: <FaSignature />,
     info: "Respuesta abierta del usuario a través de un canvas para dibujar o firmar.",
+  },
+  {
+    value: "file",
+    label: "Archivo",
+    icon: <FaFile />,
+    info: "Solicita al usuario a subir archivos.",
+    disabled: true,
   },
 ] as Array<{
   value:
@@ -91,8 +99,10 @@ export const questionTypes = [
     | "ranking"
     | "comment"
     | "matrix"
-    | "signaturepad";
+    | "signaturepad"
+    | "file";
   label: string;
   icon: JSX.Element;
   info: string;
+  disabled?: boolean;
 }>;
