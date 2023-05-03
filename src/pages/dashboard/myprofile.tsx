@@ -118,7 +118,7 @@ const MyProfile: NextPage<Props> = () => {
 
   useEffect(() => {
     getBio();
-  }, [user]);
+  }, [user, getBio]);
 
   return (
     <DashboardLayout title="Mi Perfil" description="Mi Perfil">
