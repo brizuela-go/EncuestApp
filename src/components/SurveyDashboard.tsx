@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Table } from "../components";
 import firebase from "../firebase/firebaseClient";
-import { z } from "zod";
+import { tuple, z } from "zod";
 import SurveySchema from "../schemas/SurveySchema";
 import { FaCalendar } from "react-icons/fa";
 import { BsCardText } from "react-icons/bs";
@@ -15,45 +15,6 @@ type Props = {
 };
 
 type Survey = z.infer<typeof SurveySchema>;
-
-const questionTypes = [
-  {
-    type: "text",
-    chart: "treemap",
-  },
-  {
-    type: "radiogroup",
-    chart: "pie",
-  },
-  {
-    type: "checkbox",
-    chart: "polarArea",
-  },
-  {
-    type: "dropdown",
-    chart: "donut",
-  },
-  {
-    type: "boolean",
-    chart: "pie",
-  },
-  {
-    type: "rating",
-    chart: "bar",
-  },
-  {
-    type: "ranking",
-    chart: "bubble",
-  },
-  {
-    type: "comment",
-    chart: "treemap",
-  },
-  {
-    type: "signaturepad",
-    chart: "pie",
-  },
-];
 
 const SurveyDashboard: React.FC<Props> = ({ surveyID }) => {
   const [survey, setSurvey] = useState<Survey>();
@@ -148,6 +109,408 @@ const SurveyDashboard: React.FC<Props> = ({ surveyID }) => {
     });
   }, []);
 
+  const nameAndTypes: any = survey?.elements.map((element) => [
+    element.name,
+    element.type,
+  ]);
+
+  responses.forEach((response) => delete response.pageNo);
+
+  const chartTypes = [
+    {
+      type: "text",
+      chart: "treemap",
+    },
+    {
+      type: "radiogroup",
+      chart: "pie",
+    },
+    {
+      type: "checkbox",
+      chart: "polarArea",
+    },
+    {
+      type: "dropdown",
+      chart: "donut",
+    },
+    {
+      type: "boolean",
+      chart: "pie",
+    },
+    {
+      type: "rating",
+      chart: "radar",
+    },
+    {
+      type: "ranking",
+      chart: "bar",
+    },
+    {
+      type: "comment",
+      chart: "treemap",
+    },
+    {
+      type: "signaturepad",
+      chart: "pie",
+    },
+  ];
+
+  // set type of each question in responses
+  const responsesWithType = responses.map((response) => {
+    const responseWithType: any = {};
+    Object.keys(response).forEach((key) => {
+      const index = nameAndTypes.findIndex((nameAndType: any) => {
+        return nameAndType[0] === key;
+      });
+      responseWithType[key] = {
+        value: response[key],
+        type: nameAndTypes[index][1],
+        chart: chartTypes[index].chart,
+      };
+    });
+    return responseWithType;
+  });
+
+  // find boolean key
+  const booleanKey =
+    responsesWithType[0] &&
+    Object.keys(responsesWithType[0]).find(
+      (key) => responsesWithType[0][key].type === "boolean"
+    );
+
+  // find all truthey values and falsy values
+  const trutheyValues = responsesWithType.filter(
+    (response) => response[booleanKey].value === true
+  );
+  const falsyValues = responsesWithType.filter(
+    (response) => response[booleanKey].value === false
+  );
+
+  // find text key
+  const textKey =
+    responsesWithType[0] &&
+    Object.keys(responsesWithType[0]).find(
+      (key) => responsesWithType[0][key].type === "text"
+    );
+
+  // find all text values
+  const textValues = responsesWithType.map(
+    (response) => response[textKey].value
+  );
+
+  // check if text values are the same and count them
+  const textValuesCounted: any = textValues.reduce((acc: any, curr: any) => {
+    if (typeof acc[curr] == "undefined") {
+      acc[curr] = 1;
+    } else {
+      acc[curr] += 1;
+    }
+    return acc;
+  }, []);
+
+  // text value result
+  const textValueResult = Object.entries(textValuesCounted).map(
+    ([option, count]) => ({
+      [option]: count,
+    })
+  );
+
+  // in a new array of objects, store the keys in the key "x" and the values in the key "y"
+  const textValueResultXY = textValueResult.map((result) => {
+    const key = Object.keys(result)[0];
+    const value = Object.values(result)[0];
+    return {
+      x: key,
+      y: value,
+    };
+  });
+
+  // comment key
+  const commentKey =
+    responsesWithType[0] &&
+    Object.keys(responsesWithType[0]).find(
+      (key) => responsesWithType[0][key].type === "comment"
+    );
+
+  // find all comment values
+  const commentValues = responsesWithType.map(
+    (response) => response[commentKey].value
+  );
+
+  // check if comment values are the same and count them
+  const commentValuesCounted: any = commentValues.reduce(
+    (acc: any, curr: any) => {
+      if (typeof acc[curr] == "undefined") {
+        acc[curr] = 1;
+      } else {
+        acc[curr] += 1;
+      }
+      return acc;
+    },
+    {}
+  );
+
+  // comment value result
+  const commentValueResult = Object.entries(commentValuesCounted).map(
+    ([option, count]) => ({
+      [option]: count,
+    })
+  );
+
+  const commentValueResultXY = commentValueResult.map((result) => {
+    const key = Object.keys(result)[0];
+    const value = Object.values(result)[0];
+    return {
+      x: key,
+      y: value,
+    };
+  });
+
+  // RANKING
+  const rankingKey =
+    responsesWithType[0] &&
+    Object.keys(responsesWithType[0]).find(
+      (key) => responsesWithType[0][key].type === "ranking"
+    );
+
+  const rankingValues = responsesWithType.map(
+    (response) => response[rankingKey].value
+  );
+
+  const rankingCounts = rankingValues.reduce((acc, curr) => {
+    curr.forEach((option: any, index: number) => {
+      acc[option] = (acc[option] || 0) + (curr.length - index);
+    });
+    return acc;
+  }, {});
+
+  const rankingResult = Object.entries(rankingCounts).map(
+    ([option, count]) => ({
+      [option]: count,
+    })
+  );
+
+  // ranking result keys in a single array
+  const rankingResultKeys = rankingResult.reduce((acc, curr) => {
+    return acc.concat(Object.keys(curr).toString() as any);
+  }, []);
+
+  const rankingResultValues = rankingResult.reduce((acc, curr) => {
+    return acc.concat(Object.values(curr) as any);
+  }, []);
+
+  // RADIOGROUP
+  const radioKey =
+    responsesWithType[0] &&
+    Object.keys(responsesWithType[0]).find(
+      (key) => responsesWithType[0][key].type === "radiogroup"
+    );
+
+  // find all radio values
+  const radioValues = responsesWithType.map(
+    (response) => response[radioKey].value
+  );
+
+  // check if radio values are the same and count them
+  const radioValuesCounted: any = radioValues.reduce((acc: any, curr: any) => {
+    if (typeof acc[curr] == "undefined") {
+      acc[curr] = 1;
+    } else {
+      acc[curr] += 1;
+    }
+    return acc;
+  }, {});
+
+  const radioValuesValues = Object.values(radioValuesCounted);
+  const radioValuesKeys = Object.keys(radioValuesCounted);
+
+  // CHECKBOX
+  const checkboxKey =
+    responsesWithType[0] &&
+    Object.keys(responsesWithType[0]).find(
+      (key) => responsesWithType[0][key].type === "checkbox"
+    );
+
+  const checkboxValues = responsesWithType.map(
+    (response) => response[checkboxKey].value
+  );
+
+  const checkboxValuesCounted: any = checkboxValues.reduce(
+    (acc: any, curr: any) => {
+      curr.forEach((option: any) => {
+        acc[option] = (acc[option] || 0) + 1;
+      });
+      return acc;
+    },
+    {}
+  );
+
+  const checkboxResult = Object.entries(checkboxValuesCounted).map(
+    ([option, count]) => ({
+      [option]: count,
+    })
+  );
+
+  // checkbox result values in a single array
+  const checkboxResultValues = checkboxResult.reduce((acc, curr) => {
+    return acc.concat(Object.values(curr) as any);
+  }, []);
+
+  // checkbox result keys in a single array
+  const checkboxResultKeys = checkboxResult.reduce((acc, curr) => {
+    return acc.concat(Object.keys(curr).toString() as any);
+  }, []);
+
+  // Dropdown
+  const dropdownKey =
+    responsesWithType[0] &&
+    Object.keys(responsesWithType[0]).find(
+      (key) => responsesWithType[0][key].type === "dropdown"
+    );
+
+  const dropdownValues = responsesWithType.map(
+    (response) => response[dropdownKey].value
+  );
+
+  const dropdownValuesCounted: any = dropdownValues.reduce(
+    (acc: any, curr: any) => {
+      if (typeof acc[curr] == "undefined") {
+        acc[curr] = 1;
+      } else {
+        acc[curr] += 1;
+      }
+      return acc;
+    },
+    {}
+  );
+
+  const dropdownResult = Object.entries(dropdownValuesCounted).map(
+    ([option, count]) => ({
+      [option]: count,
+    })
+  );
+
+  // dropdown result values in a single array
+  const dropdownResultValues = dropdownResult.reduce((acc, curr) => {
+    return acc.concat(Object.values(curr) as any);
+  }, []);
+
+  // dropdown result keys in a single array
+  const dropdownResultKeys = dropdownResult.reduce((acc, curr) => {
+    return acc.concat(Object.keys(curr).toString() as any);
+  }, []);
+
+  // RATINGS
+  const ratingKey =
+    responsesWithType[0] &&
+    Object.keys(responsesWithType[0]).find(
+      (key) => responsesWithType[0][key].type === "rating"
+    );
+
+  // find all rating values
+  const ratingValues = responsesWithType.map(
+    (response) => response[ratingKey].value
+  );
+
+  // check if rating values are the same and count them
+  const ratingValuesCounted: any = ratingValues.reduce(
+    (acc: any, curr: any) => {
+      if (typeof acc[curr] == "undefined") {
+        acc[curr] = 1;
+      } else {
+        acc[curr] += 1;
+      }
+      return acc;
+    },
+    {}
+  );
+
+  // rating result values in a single array
+  const ratingResultValues: any = Object.values(ratingValuesCounted);
+
+  // rating result keys in a single array
+  const ratingResultKeys = Object.keys(ratingValuesCounted);
+
+  // mean of rating values
+  const ratingResultMean =
+    ratingResultKeys.reduce(
+      (a: any, b: any) => parseFloat(a) + parseFloat(b),
+      0
+    ) / ratingResultKeys.length;
+
+  console.log("TRUTHY AND FALSY", falsyValues, trutheyValues);
+
+  // create new array of objects with type, chart and series
+  const chartData = responsesWithType.map((response) => {
+    const chartData: any = {};
+    Object.keys(response).forEach((key) => {
+      chartData[key] = {
+        type: response[key].type,
+        chart: response[key].chart,
+        series:
+          response[key].type === "boolean"
+            ? [falsyValues.length, trutheyValues.length]
+            : response[key].type === "radiogroup"
+            ? radioValuesValues
+            : response[key].type === "checkbox"
+            ? checkboxResultValues
+            : response[key].type === "dropdown"
+            ? dropdownResultValues
+            : response[key].type === "ranking"
+            ? [
+                {
+                  data: textValueResultXY,
+                },
+              ]
+            : response[key].type === "rating"
+            ? [
+                {
+                  name: "Series 1",
+                  data: ratingResultValues,
+                },
+              ]
+            : response[key].type === "text"
+            ? [
+                {
+                  data: textValueResultXY,
+                },
+              ]
+            : response[key].type === "comment"
+            ? [
+                {
+                  data: commentValueResultXY,
+                },
+              ]
+            : [3, 2],
+        labels:
+          response[key].type === "radiogroup"
+            ? radioValuesKeys
+            : response[key].type === "checkbox"
+            ? checkboxResultKeys
+            : response[key].type === "dropdown"
+            ? dropdownResultKeys
+            : "",
+        xaxis:
+          response[key].type === "rating"
+            ? {
+                categories: ratingResultKeys,
+              }
+            : response[key].type === "ranking"
+            ? {
+                categories: rankingResultKeys,
+              }
+            : "",
+      };
+    });
+    return chartData;
+  });
+
+  const newChartData: object[] = [chartData[0]];
+
+  console.log(newChartData);
+
+  // create series for each question
+
   return (
     <>
       <div className="flex  flex-col items-center justify-center space-y-4 py-20">
@@ -173,7 +536,7 @@ const SurveyDashboard: React.FC<Props> = ({ surveyID }) => {
 
       <div className="mb-24 flex flex-col items-center  justify-center space-y-6 p-6">
         <div
-          className={`entrance card my-6 h-24 rounded-lg bg-slate-300  bg-opacity-20 shadow-lg dark:bg-slate-900 dark:bg-opacity-50 lg:w-[40rem] `}
+          className={`entrance card my-6 h-24 w-72 rounded-lg bg-slate-300  bg-opacity-20 shadow-lg dark:bg-slate-900 dark:bg-opacity-50 lg:w-[60rem] `}
         >
           <div className="card-body -mt-3">
             <div className="flex flex-wrap place-items-center items-center justify-between">
@@ -202,37 +565,39 @@ const SurveyDashboard: React.FC<Props> = ({ surveyID }) => {
             {survey?.elements.map((question, index) => (
               <div
                 key={question.name + index}
-                className="w-full rounded-lg  px-4 py-6 shadow-lg "
+                className="w-full rounded-lg  bg-slate-200 bg-opacity-20 px-4 py-6 shadow-lg transition duration-300 ease-in-out hover:bg-opacity-30 hover:shadow-2xl dark:bg-black dark:bg-opacity-10 dark:hover:bg-opacity-20 dark:hover:shadow-2xl "
               >
                 <h3 className="text-xl font-medium text-gray-700 dark:text-white">
                   {question.name}
                 </h3>
                 <div className="mt-4">
-                  {questionTypes.map((type) => {
-                    if (type.type === question.type) {
-                      return (
-                        <Chart
-                          key={question.name + index}
-                          options={{
-                            chart: {
-                              id: type.chart,
-                            },
-                            labels: question.choices as any,
-                          }}
-                          series={responses.map((response) => {
-                            if (question.type === "text") {
-                              return response[question.name].length;
-                            } else {
-                              return response[question.name];
-                            }
-                          })}
-                          type={type.chart as any}
-                          width="100%"
-                          height="300px"
-                        />
-                      );
-                    }
-                  })}
+                  {newChartData.map((type: any, index: number) => (
+                    <>
+                      <Chart
+                        key={question.name + index}
+                        options={{
+                          chart: {
+                            id: type[question.name].chart,
+                          },
+                          labels: question.labelFalse
+                            ? [question.labelFalse, question.labelTrue]
+                            : type[question.name].type === "signaturepad"
+                            ? ["Firmaron", "No firmaron"]
+                            : type[question.name].labels,
+                          xaxis: type[question.name].xaxis,
+                          // fix number of decimals
+                        }}
+                        series={
+                          type[question.name] !== "signaturepad"
+                            ? type[question.name].series
+                            : [1]
+                        }
+                        type={type[question.name].chart}
+                        width="100%"
+                        height="270px"
+                      />
+                    </>
+                  ))}
                 </div>
               </div>
             ))}
